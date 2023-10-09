@@ -50,16 +50,12 @@ class Snek(pygame.sprite.Sprite):
             self.vx = 0
             self.vy = INCREMENT
 
-        logging.debug("snek vx: %s", self.vx)
-        logging.debug("snek vy: %s", self.vy)
         logging.debug("snek direction: %s", direction)
 
     def move(self):
         """needs to contain rotation and movement of body and tail"""
         self.rect.x += self.vx
         self.rect.y += self.vy
-        logging.debug("snek x: %s", self.rect.x)
-        logging.debug("snek y: %s", self.rect.y)
 
     def grow(self):
         self.size += 1
