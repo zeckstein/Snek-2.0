@@ -4,11 +4,6 @@ from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, INCREMENT
 
 import logging
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    datefmt="%m/%d/%Y %I:%M:%S %p",
-)
 """IMPLEMENT SPRITE GROUPS, 
 This just tests displaying ad moving the head
 MAYBE try to get resizable scale working also
