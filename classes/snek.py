@@ -49,6 +49,9 @@ class Snek(pygame.sprite.Sprite):
         if direction == "down":
             self.vx = 0
             self.vy = INCREMENT
+        elif direction == None:
+            # continue same direction
+            pass
 
         logging.debug("snek direction: %s", direction)
 

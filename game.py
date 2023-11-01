@@ -15,8 +15,8 @@ logging.basicConfig(
 # set min and max window size
 MINIMUM_WIDTH = MINIMUM_WIDTH
 MINIMUM_HEIGHT = MINIMUM_HEIGHT
-
-FPS = 10
+# TODO move to config?
+FPS = 5
 
 ## So window opens centered,/ might be for MS Windows only?
 # os.environ["SDL_VIDEO_CENTERED"] = "1"
@@ -72,21 +72,19 @@ class Game:
                     )
                     logging.debug("height below min")
 
-        # START OF KEYED INPUTS DURING GAME
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_ESCAPE]:
-            self.running = False
-            # TODO self.pause_menu = not self.pause_menu
+            # START OF KEYED INPUTS DURING GAME
+            if event.type == pygame.KEYDOWN:
+                direction = None
+                if event.key == pygame.K_LEFT:
+                    direction = "left"
+                if event.key == pygame.K_RIGHT:
+                    direction = "right"
+                if event.key == pygame.K_UP:
+                    direction = "up"
+                if event.key == pygame.K_DOWN:
+                    direction = "down"
 
-        # TODO would this be better closer to apple or in game logic?
-        if keys[pygame.K_LEFT]:
-            self.snek.update_direction("left")
-        if keys[pygame.K_RIGHT]:
-            self.snek.update_direction("right")
-        if keys[pygame.K_UP]:
-            self.snek.update_direction("up")
-        if keys[pygame.K_DOWN]:
-            self.snek.update_direction("down")
+                self.snek.update_direction(direction)
 
     def _game_logic(self):
         # see if Snek is intersecting Apple
@@ -94,6 +92,16 @@ class Game:
         if pygame.sprite.collide_rect(self.snek, self.apple):
             self.snek.grow()
             self.apple.update()
+
+        # add collision detection for snek and wall
+        if (
+            self.snek.rect.x < 0
+            or self.snek.rect.x > self.screen.get_width() - self.snek.rect.width
+            or self.snek.rect.y < 0
+            or self.snek.rect.y > self.screen.get_height() - self.snek.rect.height
+        ):
+            # TODO add game over and restart instead of quit
+            self.running = False
 
     def _draw(self):
         self.screen.fill("black")
