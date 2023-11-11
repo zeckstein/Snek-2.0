@@ -1,7 +1,8 @@
 import os
 import pygame
-from classes.apple import Apple
-from classes.snek import Snek
+from classes.objects.apple import Apple
+from classes.objects.snek import Snek
+
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT
 
 import logging
@@ -12,19 +13,15 @@ logging.basicConfig(
     datefmt="%m/%d/%Y %I:%M:%S %p",
 )
 
-# set min and max window size
-MINIMUM_WIDTH = MINIMUM_WIDTH
-MINIMUM_HEIGHT = MINIMUM_HEIGHT
 # TODO move to config?
 FPS = 5
 
-## So window opens centered,/ might be for MS Windows only?
+# So window opens centered,/ check if might be for MS Windows only?
 # os.environ["SDL_VIDEO_CENTERED"] = "1"
-## BUT this apparently causes issue when i want to setmode for resize too small
-## snaps the window to the center on resize instead of just initial open
-## even when i put it in the init method i think
 
 
+# TODO separate window from scene (scene = main menu, game, pause menu)
+# TODO create scene selector
 class Game:
     def __init__(self):
         pygame.init()
@@ -38,26 +35,20 @@ class Game:
         self.apple = Apple()
         self.running = True
 
-        # TODO add pause menu
-        self.pause_menu = False
-
     def run(self):
         while self.running:
             self.clock.tick(FPS)
             self._handle_input()
             self._game_logic()
             self._draw()
-
         pygame.quit()
 
     def _handle_input(self):
         for event in pygame.event.get():
-            if (
-                event.type == pygame.QUIT or event.type == pygame.K_ESCAPE
-            ):  # TODO update escape to open and close menu
+            if event.type == pygame.QUIT or event.type == pygame.K_ESCAPE:
                 self.running = False
 
-            # maintain minimum window size
+            # TODO maintain minimum window size
             # TODO add flags to larger resize for bigger game scale
             if event.type == pygame.VIDEORESIZE:
                 logging.debug("resize event: %s", event)

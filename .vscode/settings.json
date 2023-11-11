@@ -1,7 +1,11 @@
 {
     "cSpell.words": [
         "bodylist",
+        "collidepoint",
         "KEYDOWN",
+        "MOUSEBUTTONDOWN",
+        "MOUSEBUTTONUP",
+        "MOUSEMOTION",
         "Snek",
         "VIDEORESIZE"
     ],
