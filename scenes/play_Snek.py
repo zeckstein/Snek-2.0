@@ -7,7 +7,7 @@ from classes.objects.snek import Snek
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT
 
 
-def play_Snek(screen, FPS):  # TODO update params, global options
+def play_Snek(screen: pygame.Surface, FPS: int):  # TODO update params, global options
     """Gives control of passed screen for Snek game.
 
     Args:
