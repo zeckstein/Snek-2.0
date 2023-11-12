@@ -99,3 +99,7 @@ class Game:
         self.apple.draw(self.screen)
         self.snek.draw(self.screen)
         pygame.display.flip()
+
+
+if __name__ == "__main__":
+    Game().run()
