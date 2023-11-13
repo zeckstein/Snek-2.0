@@ -1,28 +1,31 @@
 import pygame
+from typing import Callable, Optional
+from config import Color
 
 
 class Button:
     def __init__(
         self,
-        x,
-        y,
-        width,
-        height,
-        text,
-        font_size=30,
-        bg_color=(255, 255, 255),
-        text_color=(0, 0, 0),
-        hover_color=(200, 200, 200),
-        click_color=(150, 150, 150),
-        callback=None,
+        text: str,
+        width: int,
+        height: int,
+        x: int,
+        y: int,
+        alignment: str = "center",
+        font_size: int = 30,
+        bg_color: Color = Color.WHITE,
+        text_color: Color = Color.BLACK,
+        hover_color: Color = Color.LIGHT_GRAY,
+        click_color: Color = Color.GRAY,
+        callback: Optional[Callable[[], None]] = None,
     ):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.font = pygame.font.Font(None, font_size)
-        self.bg_color = bg_color
-        self.text_color = text_color
-        self.hover_color = hover_color
-        self.click_color = click_color
+        self.bg_color = bg_color.value
+        self.text_color = text_color.value
+        self.hover_color = hover_color.value
+        self.click_color = click_color.value
         self.callback = callback
         self.clicked = False
         self.hovered = False
@@ -42,8 +45,6 @@ class Button:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if self.rect.collidepoint(event.pos):
                 self.clicked = True
-        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            if self.clicked and self.rect.collidepoint(event.pos):
                 if self.callback:
                     self.callback()
                 self.clicked = False

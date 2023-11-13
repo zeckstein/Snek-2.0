@@ -3,8 +3,9 @@ import logging
 
 from classes.objects.apple import Apple
 from classes.objects.snek import Snek
+import scenes
 
-from config import MINIMUM_WIDTH, MINIMUM_HEIGHT
+from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
 
 
 def play_Snek(screen: pygame.Surface, FPS: int):  # TODO update params, global options
@@ -13,7 +14,7 @@ def play_Snek(screen: pygame.Surface, FPS: int):  # TODO update params, global o
     Args:
         screen (pygame.Surface): pygame surface, intended main window
     """
-    pygame.display.set_caption("Snek")
+    pygame.display.set_caption("Snek - PLAY")
     clock = pygame.time.Clock()
     # game objects
     snek = Snek()
@@ -83,8 +84,7 @@ def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
         or snek.rect.y < 0
         or snek.rect.y > screen.get_height() - snek.rect.height
     ):
-        pygame.quit()
-        quit()
+        scenes.main_menu(screen, FPS)
 
 
 def _draw(snek: Snek, apple: Apple, screen: pygame.Surface):

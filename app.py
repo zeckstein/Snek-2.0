@@ -25,7 +25,7 @@ pygame.display.set_caption("Snek")
 # Run the game loop
 running = True
 while running:
-    scenes.play_Snek(screen, FPS)
+    scenes.main_menu(screen, FPS)
 
 
 # Quit Pygame
