@@ -2,6 +2,8 @@ import pygame
 from typing import Callable, Optional
 from config import Color
 
+# TODO think about length based on text length?
+
 
 class Button:
     def __init__(
@@ -31,8 +33,20 @@ class Button:
         self.clicked = False
         self.hovered = False
 
-        self.x = x
-        self.y = y
+        self._set_position(x, y)
+
+    def _set_position(self, x, y):
+        if self.alignment == "left":
+            self.rect.x = x
+            self.rect.y = y
+        elif self.alignment == "center":
+            self.rect.center = (x, y)
+        elif self.alignment == "right":
+            self.rect.right = x
+            self.rect.y = y
+
+    def update_position(self, new_x, new_y):
+        self._set_position(new_x, new_y)
 
     def draw(self, surface):
         color = self.bg_color
@@ -40,15 +54,6 @@ class Button:
             color = self.click_color
         elif self.hovered:
             color = self.hover_color
-
-        if self.alignment == "center":
-            self.rect.center = (self.x, self.y)
-        elif self.alignment == "left":
-            self.rect.left = self.x
-            self.rect.centery = self.y
-        elif self.alignment == "right":
-            self.rect.right = self.x
-            self.rect.centery = self.y
 
         pygame.draw.rect(surface, color, self.rect)
         text = self.font.render(self.text, True, self.text_color)

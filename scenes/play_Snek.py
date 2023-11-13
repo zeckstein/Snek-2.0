@@ -40,8 +40,7 @@ def _handle_input(snek: Snek, screen: pygame.Surface):
             pygame.quit()
             quit()
 
-        # TODO maintain minimum window size
-        # TODO add flags to larger resize for bigger game scale
+        # TODO maintain minimum window size, update to follow option settings (NOT RESIZEABLE)
         if event.type == pygame.VIDEORESIZE:
             logging.debug("resize event: %s", event)
             if screen.get_width() < MINIMUM_WIDTH:
