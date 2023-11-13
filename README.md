@@ -1,10 +1,12 @@
 # Make a new version of the Snek game
 Goal: Make a new version of the Snek game that shows better organization, code quality, and use of Python/Pygame features.  
-Considering the following:  
+Considering the following:
+ - Sound
  - Persistent Scoreboard
  - Resizable window and graphics (maybe playfield sizes s/m/l/fullzen?)
- - Two player mode
  - Curve piece?
+ - Animation
+ - Two player mode
  - AI mode
  - Power-ups
  - Different game modes
