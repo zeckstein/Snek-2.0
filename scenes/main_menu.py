@@ -2,7 +2,7 @@ import pygame
 import logging
 from classes.elements.text import Text
 from classes.elements.button import Button
-from config import Color
+from config import Color, MINIMUM_WIDTH, MINIMUM_HEIGHT
 import scenes
 
 
@@ -48,6 +48,19 @@ def main_menu(screen: pygame.Surface, FPS: int):
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 quit()
+
+            if event.type == pygame.VIDEORESIZE:
+                logging.debug("resize event: %s", event)
+                if screen.get_width() < MINIMUM_WIDTH:
+                    screen = pygame.display.set_mode(
+                        (MINIMUM_WIDTH, screen.get_height()), pygame.RESIZABLE
+                    )
+                logging.debug("width below min")
+                if screen.get_height() < MINIMUM_HEIGHT:
+                    screen = pygame.display.set_mode(
+                        (screen.get_width(), MINIMUM_HEIGHT), pygame.RESIZABLE
+                    )
+                logging.debug("height below min")
 
             play_button.handle_event(event)
             quit_button.handle_event(event)

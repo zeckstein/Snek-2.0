@@ -11,7 +11,7 @@ MAYBE try to get resizable scale working also
 
 
 class Snek(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, screen: pygame.Surface):
         pygame.sprite.Sprite.__init__(self)
         # number of body segments / ALSO == score basically
         self.size = 1
@@ -59,9 +59,9 @@ class Snek(pygame.sprite.Sprite):
         self.size += 1
         logging.debug("snek size: %s", self.size)
 
-    def draw(self, surface):
+    def draw(self, screen: pygame.Surface):
         """
         TODO Still needs to draw body (number of segments) and tail,
         all facing the correct direction.
         """
-        surface.blit(self.head_image, (self.rect.x, self.rect.y))
+        screen.blit(self.head_image, (self.rect.x, self.rect.y))

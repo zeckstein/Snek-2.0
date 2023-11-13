@@ -17,8 +17,8 @@ def play_Snek(screen: pygame.Surface, FPS: int):  # TODO update params, global o
     pygame.display.set_caption("Snek - PLAY")
     clock = pygame.time.Clock()
     # game objects
-    snek = Snek()
-    apple = Apple()
+    snek = Snek(screen)
+    apple = Apple(screen)
     # buttons
 
     # text
@@ -75,7 +75,7 @@ def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
     snek.move()
     if pygame.sprite.collide_rect(snek, apple):
         snek.grow()
-        apple.update()
+        apple.update(screen)
 
     # add collision detection for snek and wall
     if (
