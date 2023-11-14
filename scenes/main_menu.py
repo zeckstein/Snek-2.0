@@ -34,11 +34,12 @@ def main_menu(screen: pygame.Surface, FPS: int):
         bg_color=Color.RED,
         hover_color=Color.LIGHT_RED,
         click_color=Color.DARK_RED,
-        callback=lambda: pygame.quit(),
+        callback=lambda: setattr(running, "value", False),
     )
 
     # game loop
-    while True:
+    running = True
+    while running:
         pygame.display.set_caption("Snek - Main Menu")
 
         for event in pygame.event.get():

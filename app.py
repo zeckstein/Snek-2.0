@@ -1,4 +1,3 @@
-import os
 import pygame
 
 from classes.objects.apple import Apple
