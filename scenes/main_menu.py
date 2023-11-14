@@ -45,9 +45,11 @@ def main_menu(screen: pygame.Surface, FPS: int):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
+                    scenes.play_Snek(screen, FPS)
 
             if event.type == pygame.VIDEORESIZE:
                 logging.debug("resize event: %s", event)

@@ -23,6 +23,9 @@ def play_Snek(screen: pygame.Surface, FPS: int):  # TODO update params, global o
 
     # text
 
+    # score
+    score = 0
+
     while True:
         # game objects
         clock.tick(FPS)
@@ -56,17 +59,18 @@ def _handle_input(snek: Snek, screen: pygame.Surface):
 
         # START OF KEYED INPUTS DURING GAME
         if event.type == pygame.KEYDOWN:
-            snek.update_direction(event.key)
+            snek.handle_event(event.key)
 
 
 def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
     # see if Snek is intersecting Apple
-    snek.move()
+    snek.update()
     if pygame.sprite.collide_rect(snek.head, apple):
         snek.grow()
         apple.update(screen)
 
     # add collision detection for if snek.head.rect.center is outside screen.get_width() and screen.get_height()
+    # TODO does this belong in the snek class?
     if (
         snek.head.rect.centerx < 0
         or snek.head.rect.centerx > screen.get_width()

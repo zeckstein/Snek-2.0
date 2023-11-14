@@ -4,14 +4,8 @@ from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, INCREMENT
 
 import logging
 
-"""IMPLEMENT SPRITE GROUPS, 
-This just tests displaying ad moving the head
-MAYBE try to get resizable scale working also
-"""
 
 # TODO implement color selection?
-
-
 class Segment(pygame.sprite.Sprite):
     def __init__(self, image, position):
         pygame.sprite.Sprite.__init__(self)
@@ -26,84 +20,124 @@ class Snek(pygame.sprite.Group):
     def __init__(self, screen: pygame.Surface):
         pygame.sprite.Group.__init__(self)
         # number of body segments / ALSO == score basically
-        self.size = 3
-        # initial direction RIGHT
+        self.size = 1
+        # initial direction RIGHT, velocity
+        self.direction = "RIGHT"
+        self.direction_list = []
+        # TODO change INCREMENT to scale which should = size of head
         self.vx = INCREMENT
         self.vy = 0
 
         # TODO add body ad tail images and parts
-        self.head_image = pygame.transform.rotate(load_image("head"), 270)
+        self.head_image = load_image("head")
         self.body_image = load_image("body")
-        self.tail_image = pygame.transform.rotate(load_image("tail"), 270)
+        self.tail_image = load_image("tail")
 
         # Calculate initial positions
         head_start_pos = (
             (screen.get_width() // 2),
             (screen.get_height() // 2),
         )
-        head_position = head_start_pos
         body_position = (head_start_pos[0] - INCREMENT, head_start_pos[1])
         tail_position = (head_start_pos[0] - 2 * INCREMENT, head_start_pos[1])
 
-        self.head = Segment(self.head_image, head_position)
-        self.body = [Segment(self.body_image, body_position)]
+        # create snake segments
+        self.head = Segment(self.head_image, head_start_pos)
+        self.first_body_segment = Segment(self.body_image, body_position)
         self.tail = Segment(self.tail_image, tail_position)
+        # create snake body
+        self.body = [self.head, self.first_body_segment, self.tail]
 
+        # add snake segments to group
+        # TODO check if necessary
         self.add(self.head)
-        self.add(self.body[0])
+        self.add(self.first_body_segment)
         self.add(self.tail)
 
-    def update_direction(self, event_key):
+    def handle_event(self, event_key):
         """
-        TODO Needs to be updated to velocity based on scale, and velocity by clock tick
+        TODO update to velocity based on scale perhaps? and velocity by clock tick
         limit to 1 increment per clock tick NO DIAGONALS
         """
         if event_key == pygame.K_LEFT:
             self.vx = -INCREMENT
             self.vy = 0
-            logging.debug("KEY LEFT")
+            self.direction = "LEFT"
 
         elif event_key == pygame.K_RIGHT:
             self.vx = INCREMENT
             self.vy = 0
-            logging.debug("KEY RIGHT")
+            self.direction = "RIGHT"
 
         elif event_key == pygame.K_UP:
             self.vx = 0
             self.vy = -INCREMENT
-            logging.debug("KEY UP")
+            self.direction = "UP"
 
         elif event_key == pygame.K_DOWN:
             self.vx = 0
             self.vy = INCREMENT
-            logging.debug("KEY DOWN")
+            self.direction = "DOWN"
 
         else:
             # continue same direction
             pass
 
     def grow(self):
-        # Create a new body segment and add it to the group
-        new_body_segment = Segment(self.body[0].image, self.tail.rect.center)
-        self.body.insert(0, new_body_segment)
-        self.add(new_body_segment)
+        # Create a new body segment and add it to self.body
+        new_segment = Segment(self.body_image, self.body[-1].rect.center)
+        self.body[-1] = new_segment
+        self.add(new_segment)
+        self.body.append(self.tail)
 
-    def move(self):
-        # current center position of head
-        initial_head_pos = self.head.rect.center
-        # move head
-        self.head.rect.center = (
-            initial_head_pos[0] + self.vx,
-            initial_head_pos[1] + self.vy,
-        )
+        self.size += 1
 
-        # move first body segment to position of head before it moved
-        self.body[0].rect.center = initial_head_pos
+    def update(self):
+        # Store the old positions of the head and body segments
+        old_positions = [segment.rect.center for segment in self.body]
 
-        # move tail
+        # Move the head
+        self.head.rect.centerx += self.vx
+        self.head.rect.centery += self.vy
+
+        # Move each body segment to the old position of the segment in front of it
+        for i, segment in enumerate(self.body[1:]):
+            segment.rect.center = old_positions[i]
+
+        self._track_direction()
+
+    def _track_direction(self):
+        # for head and tail rotations
+        self.direction_list.append(self.direction)
+        if len(self.direction_list) > self.size + 1:
+            self.direction_list.pop(0)
+
+    def check_collision(self):
+        # TODO check if snek is colliding with itself
+        pass
 
     def draw(self, surface: pygame.Surface):
-        self.head.draw(surface)
-        for segment in self.body:
+        for i, segment in enumerate(self.body):
+            if i == 0:
+                if self.direction_list[-1] == "RIGHT":
+                    self.head_image = pygame.transform.rotate(load_image("head"), 270)
+                elif self.direction_list[-1] == "LEFT":
+                    self.head_image = pygame.transform.rotate(load_image("head"), 90)
+                elif self.direction_list[-1] == "DOWN":
+                    self.head_image = pygame.transform.rotate(load_image("head"), 180)
+                elif self.direction_list[-1] == "UP":
+                    self.head_image = pygame.transform.rotate(load_image("head"), 0)
+                segment.image = self.head_image
+            elif i == len(self.body) - 1:
+                if self.direction_list[0] == "RIGHT":
+                    self.tail_image = pygame.transform.rotate(load_image("tail"), 270)
+                elif self.direction_list[0] == "LEFT":
+                    self.tail_image = pygame.transform.rotate(load_image("tail"), 90)
+                elif self.direction_list[0] == "DOWN":
+                    self.tail_image = pygame.transform.rotate(load_image("tail"), 180)
+                elif self.direction_list[0] == "UP":
+                    self.tail_image = pygame.transform.rotate(load_image("tail"), 0)
+                segment.image = self.tail_image
+            else:
+                segment.image = self.body_image
             segment.draw(surface)
-        self.tail.draw(surface)
