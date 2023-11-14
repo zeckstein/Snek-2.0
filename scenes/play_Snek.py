@@ -8,18 +8,20 @@ import scenes
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
 
 
-def play_Snek(screen: pygame.Surface, FPS: int):  # TODO update params, global options
+def play_Snek(screen: pygame.Surface):  # TODO update params, global options
     """Gives control of passed screen for Snek game.
 
     Args:
         screen (pygame.Surface): pygame surface, intended main window
     """
+    logging.info("Entering Snek game")
+
     pygame.display.set_caption("Snek - PLAY")
-    clock = pygame.time.Clock()
+
     # game objects
+    clock = pygame.time.Clock()
     snek = Snek(screen)
     apple = Apple(screen)
-    # buttons
 
     # text
 
@@ -43,7 +45,7 @@ def _handle_input(snek: Snek, screen: pygame.Surface):
             pygame.quit()
             quit()
 
-        # TODO maintain minimum window size, update to follow option settings (MAKE NOT RESIZEABLE?)
+        # TODO maintain minimum window size, update to follow option settings (MAKE NOT RESIZABLE?)
         if event.type == pygame.VIDEORESIZE:
             logging.debug("resize event: %s", event)
             if screen.get_width() < MINIMUM_WIDTH:
@@ -77,7 +79,7 @@ def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
         or snek.head.rect.centery < 0
         or snek.head.rect.centery > screen.get_height()
     ):
-        scenes.main_menu(screen, FPS)
+        scenes.main_menu(screen)
 
 
 def _draw(snek: Snek, apple: Apple, screen: pygame.Surface):
