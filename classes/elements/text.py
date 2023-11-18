@@ -1,5 +1,5 @@
 import pygame
-from config import Color
+from utils import Color
 
 
 class Text:

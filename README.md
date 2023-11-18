@@ -11,10 +11,35 @@ Considering the following:
  - Power-ups
  - Different game modes
 
-## Requirements (see final req file for full list)
-- Python 3.11
-- Pygame 2.5.2
+## Requirements
+- Python>=3.11
+- Pygame>=2.5.2
 
-## zOLD.py
-Old version from start of learning to code.  
-For ref
+
+Project Organization
+------------
+
+    ├── README.md          <- The top-level README for this project.
+    │
+    ├── app.py             <- Entry point. Run this to start the game.
+    │
+    ├── config.py          <- global config file (minimum window size, default FPS)
+    │
+    ├── utils.py           <- load_image(), Color: Enum
+    │
+    ├── zOLD.py            <- previous code base (early learnings)
+    │
+    ├── assets
+    │   ├── images         <- snake and apple .pngs
+    │   └── sounds         <- (#TODO) music and sound effects
+    │
+    ├── classes
+    │   ├── elements       <- UI elements (buttons, text)
+    │   └── objects        <- game objects (snake, apple)
+    │
+    └── scenes             <- Loops for each scene space
+        ├── main_menu.py
+        ├── play_Snek.py
+        ├── (#TODO) game_over.py
+        ├── (#TODO) leaderboard.py
+        └── (#TODO) options_menu.py

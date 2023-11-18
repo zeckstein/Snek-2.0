@@ -1,8 +1,8 @@
 import pygame
 from typing import Callable, Optional
-from config import Color
+from utils import Color
 
-# TODO think about length based on text length?
+# TODO think about default length based on text length?
 
 
 class Button:
