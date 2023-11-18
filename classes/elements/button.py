@@ -2,8 +2,6 @@ import pygame
 from typing import Callable, Optional
 from utils import Color
 
-# TODO think about default length based on text length?
-
 
 class Button:
     def __init__(
@@ -20,7 +18,7 @@ class Button:
         hover_color: Color = Color.LIGHT_GRAY,
         click_color: Color = Color.GRAY,
         callback: Optional[Callable[[], None]] = None,
-    ):
+    ) -> None:
         self.alignment = alignment
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
@@ -35,7 +33,7 @@ class Button:
 
         self._set_position(x, y)
 
-    def _set_position(self, x, y):
+    def _set_position(self, x: int, y: int) -> None:
         if self.alignment == "left":
             self.rect.x = x
             self.rect.y = y
@@ -45,10 +43,10 @@ class Button:
             self.rect.right = x
             self.rect.y = y
 
-    def update_position(self, new_x, new_y):
+    def update_position(self, new_x: int, new_y: int) -> None:
         self._set_position(new_x, new_y)
 
-    def draw(self, surface):
+    def draw(self, surface: pygame.Surface) -> None:
         color = self.bg_color
         if self.clicked:
             color = self.click_color
@@ -60,7 +58,7 @@ class Button:
         text_rect = text.get_rect(center=self.rect.center)
         surface.blit(text, text_rect)
 
-    def handle_event(self, event):
+    def handle_event(self, event: pygame.KEYDOWN) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if self.rect.collidepoint(event.pos):
                 self.clicked = True

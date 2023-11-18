@@ -6,7 +6,7 @@ import scenes
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
 
 
-def play_Snek(screen: pygame.Surface):  # TODO update params, global options
+def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global options
     """Gives control of passed screen for Snek game.
 
     Args:
@@ -36,7 +36,7 @@ def play_Snek(screen: pygame.Surface):  # TODO update params, global options
     quit()
 
 
-def _handle_input(snek: Snek, screen: pygame.Surface):
+def _handle_input(snek: Snek, screen: pygame.Surface) -> None:
     """Handles pygame events."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT or event.type == pygame.K_ESCAPE:
@@ -62,7 +62,7 @@ def _handle_input(snek: Snek, screen: pygame.Surface):
             snek.handle_event(event.key)
 
 
-def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
+def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface) -> None:
     # see if Snek is intersecting Apple
     if snek.update(screen) == False:
         scenes.main_menu(screen)
@@ -77,7 +77,7 @@ def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
             logging.debug("apple under snek, watch out for infinity if you can WIN!")
 
 
-def _draw(snek: Snek, apple: Apple, screen: pygame.Surface):
+def _draw(snek: Snek, apple: Apple, screen: pygame.Surface) -> None:
     screen.fill("black")
     apple.draw(screen)
     snek.draw(screen)

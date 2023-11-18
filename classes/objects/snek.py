@@ -28,7 +28,6 @@ class Snek(pygame.sprite.Group):
         self.vx = INCREMENT
         self.vy = 0
 
-        # TODO add body ad tail images and parts
         self.head_image = load_image("head")
         self.body_image = load_image("body")
         self.tail_image = load_image("tail")
@@ -54,11 +53,15 @@ class Snek(pygame.sprite.Group):
         self.add(self.first_body_segment)
         self.add(self.tail)
 
-    def handle_event(self, event_key):
+    def handle_event(self, event_key: pygame.KEYDOWN) -> None:
+        # TODO update to options/settings controls once implemented
+        """Handles pygame events for the Snek object.
+        Args:
+            event_key (pygame.KEYDOWN): a pygame.KEYDOWN event only accepts
+            LEFT, RIGHT, UP, DOWN arrow keys
         """
-        TODO update to velocity based on scale perhaps? and velocity by clock tick
-        limit to 1 increment per clock tick NO DIAGONALS
-        """
+        # TODO update when self.direction set to try to avoid direct turn around issue
+        # rapid keypress allows for backtrack death :*(
         if event_key == pygame.K_LEFT and self.direction != "RIGHT":
             self.vx = -INCREMENT
             self.vy = 0
@@ -83,7 +86,7 @@ class Snek(pygame.sprite.Group):
             # continue same direction
             pass
 
-    def grow(self):
+    def grow(self) -> None:
         # Create a new body segment and add it to self.body
         new_segment = Segment(self.body_image, self.body[-1].rect.center)
         self.body[-1] = new_segment
@@ -113,13 +116,13 @@ class Snek(pygame.sprite.Group):
         else:
             return True
 
-    def _track_direction(self):
+    def _track_direction(self) -> None:
         # for head and tail rotations
         self.direction_list.append(self.direction)
         if len(self.direction_list) > self._size + 1:
             self.direction_list.pop(0)
 
-    def _check_self_collision(self):
+    def _check_self_collision(self) -> bool:
         # get the coords out of the segments
         coords = [segment.rect.center for segment in self.body]
         # if any of the coordinates are the same (erased by set), there is a collision
@@ -129,7 +132,7 @@ class Snek(pygame.sprite.Group):
         else:
             return False
 
-    def _check_boundary_collision(self, screen: pygame.Surface):
+    def _check_boundary_collision(self, screen: pygame.Surface) -> bool:
         if (
             self.head.rect.centerx < 0
             or self.head.rect.centerx > screen.get_width()
@@ -141,7 +144,7 @@ class Snek(pygame.sprite.Group):
         else:
             return False
 
-    def draw(self, surface: pygame.Surface):
+    def draw(self, surface: pygame.Surface) -> None:
         for i, segment in enumerate(self.body):
             if i == 0:
                 if self.direction_list[-1] == "RIGHT":
@@ -167,5 +170,5 @@ class Snek(pygame.sprite.Group):
                 segment.image = self.body_image
             segment.draw(surface)
 
-    def get_score(self):
+    def get_score(self) -> int:
         return self._size

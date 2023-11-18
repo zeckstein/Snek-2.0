@@ -14,10 +14,14 @@ class Apple(pygame.sprite.Sprite):
         self.rect.x = random.randrange(0, screen.get_width(), INCREMENT)
         self.rect.y = random.randrange(0, screen.get_height(), INCREMENT)
 
-    def update(self, screen: pygame.Surface):
-        # TODO get current playing field size instead of min
+    def update(self, screen: pygame.Surface) -> None:
+        """update the apple position
+
+        Args:
+            screen (pygame.Surface): the game screen
+        """
         self.rect.x = random.randrange(0, screen.get_width(), INCREMENT)
         self.rect.y = random.randrange(0, screen.get_height(), INCREMENT)
 
-    def draw(self, surface: pygame.Surface):
+    def draw(self, surface: pygame.Surface) -> None:
         surface.blit(self.image, (self.rect.x, self.rect.y))
