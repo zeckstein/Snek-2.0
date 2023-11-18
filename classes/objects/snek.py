@@ -86,15 +86,6 @@ class Snek(pygame.sprite.Group):
             # continue same direction
             pass
 
-    def grow(self) -> None:
-        # Create a new body segment and add it to self.body
-        new_segment = Segment(self.body_image, self.body[-1].rect.center)
-        self.body[-1] = new_segment
-        self.add(new_segment)
-        self.body.append(self.tail)
-
-        self._size += 1
-
     def update(self, screen: pygame.Surface) -> bool:
         """Store the old positions of the head and body segments
         returns True if no collision, False if collision"""
@@ -169,6 +160,15 @@ class Snek(pygame.sprite.Group):
             else:
                 segment.image = self.body_image
             segment.draw(surface)
+
+    def grow(self) -> None:
+        # Create a new body segment and add it to self.body
+        new_segment = Segment(self.body_image, self.body[-1].rect.center)
+        self.body[-1] = new_segment
+        self.add(new_segment)
+        self.body.append(self.tail)
+
+        self._size += 1
 
     def get_score(self) -> int:
         return self._size
