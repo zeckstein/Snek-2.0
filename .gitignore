@@ -1,0 +1,10 @@
+.vscode
+
+__pycache__
+scenes/__pycache__
+
+classes/objects/__pycache__/snek.cpython-311.pyc
+classes/objects/__pycache__/apple.cpython-311.pyc
+
+classes/elements/__pycache__/button.cpython-311.pyc
+classes/elements/__pycache__/text.cpython-311.pyc
