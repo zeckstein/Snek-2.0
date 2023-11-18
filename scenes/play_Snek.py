@@ -1,10 +1,8 @@
 import pygame
 import logging
-
 from classes.objects.apple import Apple
 from classes.objects.snek import Snek
 import scenes
-
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
 
 
@@ -66,7 +64,8 @@ def _handle_input(snek: Snek, screen: pygame.Surface):
 
 def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
     # see if Snek is intersecting Apple
-    snek.update()
+    if snek.update() == False:
+        scenes.main_menu(screen)
     if pygame.sprite.collide_rect(snek.head, apple):
         snek.grow()
         apple.update(screen)
@@ -79,6 +78,7 @@ def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
         or snek.head.rect.centery < 0
         or snek.head.rect.centery > screen.get_height()
     ):
+        logging.info("Snek out of bounds")
         scenes.main_menu(screen)
 
 

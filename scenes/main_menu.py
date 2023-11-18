@@ -2,8 +2,9 @@ import pygame
 import logging
 from classes.elements.text import Text
 from classes.elements.button import Button
-from config import Color, MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
 import scenes
+from utils import Color
+from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
 
 
 def main_menu(screen: pygame.Surface):
@@ -71,7 +72,7 @@ def _handle_events(screen: pygame.Surface, *args):
                 pygame.quit()
                 quit()
             if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
-                scenes.play_Snek(screen, FPS)
+                scenes.play_Snek(screen)
 
         if event.type == pygame.VIDEORESIZE:
             logging.debug("resize event: %s", event)

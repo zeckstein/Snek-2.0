@@ -20,7 +20,7 @@ class Snek(pygame.sprite.Group):
     def __init__(self, screen: pygame.Surface):
         pygame.sprite.Group.__init__(self)
         # number of body segments / ALSO == score basically
-        self.size = 1
+        self._size = 1
         # initial direction RIGHT, velocity
         self.direction = "RIGHT"
         self.direction_list = []
@@ -59,22 +59,22 @@ class Snek(pygame.sprite.Group):
         TODO update to velocity based on scale perhaps? and velocity by clock tick
         limit to 1 increment per clock tick NO DIAGONALS
         """
-        if event_key == pygame.K_LEFT:
+        if event_key == pygame.K_LEFT and self.direction != "RIGHT":
             self.vx = -INCREMENT
             self.vy = 0
             self.direction = "LEFT"
 
-        elif event_key == pygame.K_RIGHT:
+        elif event_key == pygame.K_RIGHT and self.direction != "LEFT":
             self.vx = INCREMENT
             self.vy = 0
             self.direction = "RIGHT"
 
-        elif event_key == pygame.K_UP:
+        elif event_key == pygame.K_UP and self.direction != "DOWN":
             self.vx = 0
             self.vy = -INCREMENT
             self.direction = "UP"
 
-        elif event_key == pygame.K_DOWN:
+        elif event_key == pygame.K_DOWN and self.direction != "UP":
             self.vx = 0
             self.vy = INCREMENT
             self.direction = "DOWN"
@@ -90,10 +90,11 @@ class Snek(pygame.sprite.Group):
         self.add(new_segment)
         self.body.append(self.tail)
 
-        self.size += 1
+        self._size += 1
 
-    def update(self):
-        # Store the old positions of the head and body segments
+    def update(self) -> bool:
+        """Store the old positions of the head and body segments
+        returns True if no collision, False if collision"""
         old_positions = [segment.rect.center for segment in self.body]
 
         # Move the head
@@ -106,15 +107,26 @@ class Snek(pygame.sprite.Group):
 
         self._track_direction()
 
+        if self._check_self_collision():
+            logging.info("self collision detected")
+            return False
+        else:
+            return True
+
     def _track_direction(self):
         # for head and tail rotations
         self.direction_list.append(self.direction)
-        if len(self.direction_list) > self.size + 1:
+        if len(self.direction_list) > self._size + 1:
             self.direction_list.pop(0)
 
-    def check_collision(self):
-        # TODO check if snek is colliding with itself
-        pass
+    def _check_self_collision(self):
+        # get the coords out of the segments
+        coords = [segment.rect.center for segment in self.body]
+        # if any of the coordinates are the same (erased by set), there is a collision
+        if len(coords) != len(set(coords)):
+            return True
+        else:
+            return False
 
     def draw(self, surface: pygame.Surface):
         for i, segment in enumerate(self.body):
@@ -141,3 +153,6 @@ class Snek(pygame.sprite.Group):
             else:
                 segment.image = self.body_image
             segment.draw(surface)
+
+    def get_score(self):
+        return self._size
