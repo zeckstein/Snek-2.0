@@ -38,8 +38,10 @@ Project Organization
     │   └── objects        <- game objects (snake, apple)
     │
     └── scenes             <- Loops for each scene space
-        ├── main_menu.py
-        ├── play_Snek.py
-        ├── (#TODO) game_over.py
-        ├── (#TODO) leaderboard.py
-        └── (#TODO) options_menu.py
+    │   ├── main_menu.py
+    │   ├── play_Snek.py
+    │   ├── (#TODO) game_over.py
+    │   ├── (#TODO) leaderboard.py
+    │   └── (#TODO) options_menu.py
+    │
+    └── .gitignore        <- cache files and .vscode workspace settings (e.g. spellcheck, etc.)
