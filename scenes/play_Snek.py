@@ -64,22 +64,17 @@ def _handle_input(snek: Snek, screen: pygame.Surface):
 
 def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface):
     # see if Snek is intersecting Apple
-    if snek.update() == False:
+    if snek.update(screen) == False:
         scenes.main_menu(screen)
     if pygame.sprite.collide_rect(snek.head, apple):
         snek.grow()
         apple.update(screen)
+        # check if apple is under snek
+        # TODO check when there is nospace left for apple
 
-    # add collision detection for if snek.head.rect.center is outside screen.get_width() and screen.get_height()
-    # TODO does this belong in the snek class?
-    if (
-        snek.head.rect.centerx < 0
-        or snek.head.rect.centerx > screen.get_width()
-        or snek.head.rect.centery < 0
-        or snek.head.rect.centery > screen.get_height()
-    ):
-        logging.info("Snek out of bounds")
-        scenes.main_menu(screen)
+        while pygame.sprite.spritecollideany(apple, snek):
+            apple.update(screen)
+            logging.debug("apple under snek, watch out for infinity if you can WIN!")
 
 
 def _draw(snek: Snek, apple: Apple, screen: pygame.Surface):

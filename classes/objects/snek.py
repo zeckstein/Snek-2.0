@@ -13,7 +13,7 @@ class Segment(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=position)
 
     def draw(self, surface: pygame.Surface):
-        surface.blit(self.image, (self.rect.x, self.rect.y))
+        surface.blit(self.image, self.rect)
 
 
 class Snek(pygame.sprite.Group):
@@ -24,7 +24,7 @@ class Snek(pygame.sprite.Group):
         # initial direction RIGHT, velocity
         self.direction = "RIGHT"
         self.direction_list = []
-        # TODO change INCREMENT to scale which should = size of head
+        # TODO change INCREMENT to scale which should = size of head rect
         self.vx = INCREMENT
         self.vy = 0
 
@@ -92,7 +92,7 @@ class Snek(pygame.sprite.Group):
 
         self._size += 1
 
-    def update(self) -> bool:
+    def update(self, screen: pygame.Surface) -> bool:
         """Store the old positions of the head and body segments
         returns True if no collision, False if collision"""
         old_positions = [segment.rect.center for segment in self.body]
@@ -107,8 +107,8 @@ class Snek(pygame.sprite.Group):
 
         self._track_direction()
 
-        if self._check_self_collision():
-            logging.info("self collision detected")
+        if self._check_self_collision() or self._check_boundary_collision(screen):
+            logging.info("DEAD")
             return False
         else:
             return True
@@ -124,6 +124,19 @@ class Snek(pygame.sprite.Group):
         coords = [segment.rect.center for segment in self.body]
         # if any of the coordinates are the same (erased by set), there is a collision
         if len(coords) != len(set(coords)):
+            logging.info("Snek self collision")
+            return True
+        else:
+            return False
+
+    def _check_boundary_collision(self, screen: pygame.Surface):
+        if (
+            self.head.rect.centerx < 0
+            or self.head.rect.centerx > screen.get_width()
+            or self.head.rect.centery < 0
+            or self.head.rect.centery > screen.get_height()
+        ):
+            logging.info("Snek out of bounds")
             return True
         else:
             return False
