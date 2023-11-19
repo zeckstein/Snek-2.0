@@ -25,22 +25,31 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
 
     # stop all music then play this scene's track
     pygame.mixer.stop()
-    bg_music_snek = pygame.mixer.Sound(
-        "assets/sounds/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3"
+    bg_music_snek_slow = pygame.mixer.Sound(
+        "assets/sounds/bg_music/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3"
     )
-    bg_music_snek.play(-1)
+    bg_music_snek_slow.play(-1)
+
+    # insert a sleep to allow music to start
+    sleep = True
 
     while True:
         # game objects
         clock.tick(FPS)
-        _handle_input(snek, screen)
-        _game_logic(snek, apple, screen)
-        _draw(snek, apple, screen)
+        _handle_input(screen, snek)
+        _game_logic(screen, snek, apple)
+        _draw(screen, snek, apple)
+
+        # minor pause for music
+        # TODO READY, GO! progressive text
+        if sleep:
+            pygame.time.delay(1100)
+            sleep = False
     pygame.quit()
     quit()
 
 
-def _handle_input(snek: Snek, screen: pygame.Surface) -> None:
+def _handle_input(screen: pygame.Surface, snek: Snek) -> None:
     """Handles pygame events."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT or event.type == pygame.K_ESCAPE:
@@ -66,7 +75,7 @@ def _handle_input(snek: Snek, screen: pygame.Surface) -> None:
             snek.handle_event(event.key)
 
 
-def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface) -> None:
+def _game_logic(screen: pygame.Surface, snek: Snek, apple: Apple) -> None:
     # see if Snek is intersecting Apple
     if snek.update(screen) == False:
         scenes.main_menu(screen)
@@ -81,7 +90,7 @@ def _game_logic(snek: Snek, apple: Apple, screen: pygame.Surface) -> None:
             logging.debug("apple under snek, watch out for infinity if you can WIN!")
 
 
-def _draw(snek: Snek, apple: Apple, screen: pygame.Surface) -> None:
+def _draw(screen: pygame.Surface, snek: Snek, apple: Apple) -> None:
     screen.fill("black")
     apple.draw(screen)
     snek.draw(screen)

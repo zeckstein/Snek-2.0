@@ -49,7 +49,7 @@ def main_menu(screen: pygame.Surface):
     # TODO make this a utils function and in all scenes (just play_Snek for now)
     pygame.mixer.stop()
     bg_music_menu = pygame.mixer.Sound(
-        "assets/sounds/2019-01-02_-_8_Bit_Menu_-_David_Renda_-_FesliyanStudios.com.mp3",
+        "assets/sounds/bg_music/2019-01-02_-_8_Bit_Menu_-_David_Renda_-_FesliyanStudios.com.mp3",
     )
     bg_music_menu.play(-1)
 
@@ -57,7 +57,7 @@ def main_menu(screen: pygame.Surface):
     running = True
     while running:
         pygame.display.set_caption("Snek - Main Menu")
-        _handle_events(screen, play_button, quit_button)
+        _handle_events(screen, *drawn_objects_with_handle_event)
         _draw(screen, objects_to_draw)
 
     pygame.quit()
