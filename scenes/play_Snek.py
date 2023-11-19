@@ -23,8 +23,12 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
 
     # text
 
-    # score
-    score = 0
+    # stop all music then play this scene's track
+    pygame.mixer.stop()
+    bg_music_snek = pygame.mixer.Sound(
+        "assets/sounds/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3"
+    )
+    bg_music_snek.play(-1)
 
     while True:
         # game objects

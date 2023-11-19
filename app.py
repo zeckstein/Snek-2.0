@@ -21,6 +21,9 @@ pygame.init()
 screen = pygame.display.set_mode((MINIMUM_WIDTH, MINIMUM_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Snek")
 
+# main_menu music
+pygame.mixer.init()
+
 # Run the game loop
 running = True
 while running:
