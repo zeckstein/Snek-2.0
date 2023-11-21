@@ -1,8 +1,15 @@
+from pathlib import Path
 import pygame
 from utils import load_image
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, INCREMENT
 
 import logging
+
+base_dir = Path(__file__).resolve().parent.parent.parent
+pygame.mixer.init()
+sfx_chomp = pygame.mixer.Sound(
+    str(base_dir / "assets/sounds/sfx/chomp.mp3")
+)
 
 
 # TODO implement color selection?
@@ -52,6 +59,8 @@ class Snek(pygame.sprite.Group):
         self.add(self.head)
         self.add(self.first_body_segment)
         self.add(self.tail)
+        
+        self.sfx_chomp = sfx_chomp
 
     def handle_event(self, event_key: pygame.KEYDOWN) -> None:
         # TODO update to options/settings controls once implemented
@@ -85,8 +94,9 @@ class Snek(pygame.sprite.Group):
         else:
             # continue same direction
             pass
+   
 
-    def update(self, screen: pygame.Surface) -> bool:
+    def update(self, screen: pygame.Surface, chomp: bool) -> bool:
         """Store the old positions of the head and body segments
         returns True if no collision, False if collision"""
         old_positions = [segment.rect.center for segment in self.body]
@@ -105,6 +115,9 @@ class Snek(pygame.sprite.Group):
             logging.info("DEAD")
             return False
         else:
+            if chomp:
+                self.sfx_chomp.play()
+                self._grow()
             return True
 
     def _track_direction(self) -> None:
@@ -134,6 +147,16 @@ class Snek(pygame.sprite.Group):
             return True
         else:
             return False
+        
+    def _grow(self) -> None:
+        # Create a new body segment and add it to self.body
+        new_segment = Segment(self.body_image, self.body[-1].rect.center)
+        self.body[-1] = new_segment
+        self.add(new_segment)
+        self.body.append(self.tail)
+
+        self._size += 1
+        
 
     def draw(self, surface: pygame.Surface) -> None:
         for i, segment in enumerate(self.body):
@@ -161,14 +184,6 @@ class Snek(pygame.sprite.Group):
                 segment.image = self.body_image
             segment.draw(surface)
 
-    def grow(self) -> None:
-        # Create a new body segment and add it to self.body
-        new_segment = Segment(self.body_image, self.body[-1].rect.center)
-        self.body[-1] = new_segment
-        self.add(new_segment)
-        self.body.append(self.tail)
-
-        self._size += 1
 
     def get_score(self) -> int:
         return self._size

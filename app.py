@@ -15,14 +15,13 @@ logging.basicConfig(
     datefmt="%m/%d/%Y %I:%M:%S %p",
 )
 
-# Initialize Pygame
+# Initialize sounds and Pygame
 pygame.init()
 # Set up the window
-screen = pygame.display.set_mode((MINIMUM_WIDTH, MINIMUM_HEIGHT), pygame.RESIZABLE)
+screen = pygame.display.set_mode((MINIMUM_WIDTH, MINIMUM_HEIGHT))
 pygame.display.set_caption("Snek")
 
-# main_menu music
-pygame.mixer.init()
+
 
 # Run the game loop
 running = True

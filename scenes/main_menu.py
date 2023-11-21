@@ -1,3 +1,4 @@
+from pathlib import Path
 import pygame
 import logging
 from classes.elements.text import Text
@@ -5,6 +6,13 @@ from classes.elements.button import Button
 import scenes
 from utils import Color
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
+
+base_dir = Path(__file__).resolve().parent.parent
+# main_menu music
+pygame.mixer.init()
+bg_music_menu = pygame.mixer.Sound(
+    base_dir / "assets/sounds/bg_music/2019-01-02_-_8_Bit_Menu_-_David_Renda_-_FesliyanStudios.com.mp3",
+)
 
 
 def main_menu(screen: pygame.Surface):
@@ -48,9 +56,6 @@ def main_menu(screen: pygame.Surface):
     # stop all music then play this scene's track
     # TODO make this a utils function and in all scenes (just play_Snek for now)
     pygame.mixer.stop()
-    bg_music_menu = pygame.mixer.Sound(
-        "assets/sounds/bg_music/2019-01-02_-_8_Bit_Menu_-_David_Renda_-_FesliyanStudios.com.mp3",
-    )
     bg_music_menu.play(-1)
 
     # game loop

@@ -31,7 +31,7 @@ Project Organization
     │
     ├── assets
     │   ├── images         <- snake and apple .pngs
-    │   └── sounds         <- (#TODO) music and sound effects
+    │   └── sounds         <- music and (#TODO) sound effects
     │       ├── bg_music   <- background music files (mp3)
     │       └── sfx        <- sound effects (empty for now)
     │
