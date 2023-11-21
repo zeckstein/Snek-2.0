@@ -6,11 +6,11 @@ from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, INCREMENT
 import logging
 
 base_dir = Path(__file__).resolve().parent.parent.parent
+# TODO investigate better way to global initialize and not need this in every file
 pygame.mixer.init()
 sfx_chomp = pygame.mixer.Sound(
     str(base_dir / "assets/sounds/sfx/chomp.mp3")
 )
-
 
 # TODO implement color selection?
 class Segment(pygame.sprite.Sprite):
@@ -35,9 +35,9 @@ class Snek(pygame.sprite.Group):
         self.vx = INCREMENT
         self.vy = 0
 
-        self.head_image = load_image("head")
-        self.body_image = load_image("body")
-        self.tail_image = load_image("tail")
+        self.head_image = load_image('head')
+        self.body_image = load_image('body')
+        self.tail_image = load_image('tail')
 
         # Calculate initial positions
         head_start_pos = (
@@ -72,30 +72,62 @@ class Snek(pygame.sprite.Group):
         # TODO update when self.direction set to try to avoid direct turn around issue
         # rapid keypress allows for backtrack death :*(
         if event_key == pygame.K_LEFT and self.direction != "RIGHT":
-            self.vx = -INCREMENT
-            self.vy = 0
-            self.direction = "LEFT"
+            self._update_direction("LEFT")
+        if event_key == pygame.K_RIGHT and self.direction != "LEFT":
+            self._update_direction("RIGHT")
+        if event_key == pygame.K_UP and self.direction != "DOWN":
+            self._update_direction("UP")
+        if event_key == pygame.K_DOWN and self.direction != "UP":
+            self._update_direction("DOWN")
 
-        elif event_key == pygame.K_RIGHT and self.direction != "LEFT":
-            self.vx = INCREMENT
-            self.vy = 0
-            self.direction = "RIGHT"
+    
+    def _update_direction(self, direction: str) -> None:
+        """ensures no vertical uturns onto self
 
-        elif event_key == pygame.K_UP and self.direction != "DOWN":
-            self.vx = 0
-            self.vy = -INCREMENT
-            self.direction = "UP"
-
-        elif event_key == pygame.K_DOWN and self.direction != "UP":
-            self.vx = 0
-            self.vy = INCREMENT
-            self.direction = "DOWN"
-
-        else:
-            # continue same direction
-            pass
-   
-
+        Args:
+            direction (str): direction from input
+        """
+        current_x = self.head.rect.centerx
+        current_y = self.head.rect.centery
+        
+        if direction == "RIGHT" and self.direction != "LEFT":
+            head_predicted_position = (current_x + INCREMENT, current_y)
+            if (head_predicted_position[0] == self.body[1].rect.centerx and 
+                head_predicted_position[1] == self.body[1].rect.centery):
+                pass
+            else:
+                self.vx = INCREMENT
+                self.vy = 0
+                self.direction = "RIGHT"
+        if direction == "LEFT" and self.direction != "RIGHT":
+            head_predicted_position = (current_x - INCREMENT, current_y)
+            if (head_predicted_position[0] == self.body[1].rect.centerx and 
+                head_predicted_position[1] == self.body[1].rect.centery):
+                pass
+            else:
+                self.vx = -INCREMENT
+                self.vy = 0
+                self.direction = "LEFT"
+        if direction == "UP" and self.direction != "DOWN":
+            head_predicted_position = (current_x, current_y - INCREMENT)
+            if (head_predicted_position[0] == self.body[1].rect.centerx and 
+                head_predicted_position[1] == self.body[1].rect.centery):
+                pass
+            else:
+                self.vx = 0
+                self.vy = -INCREMENT
+                self.direction = "UP"
+        if direction == "DOWN" and self.direction != "UP":
+            head_predicted_position = (current_x, current_y + INCREMENT)
+            if (head_predicted_position[0] == self.body[1].rect.centerx and 
+                head_predicted_position[1] == self.body[1].rect.centery):
+                pass
+            else:
+                self.vx = 0
+                self.vy = INCREMENT
+                self.direction = "DOWN"
+                
+        
     def update(self, screen: pygame.Surface, chomp: bool) -> bool:
         """Store the old positions of the head and body segments
         returns True if no collision, False if collision"""
@@ -159,29 +191,29 @@ class Snek(pygame.sprite.Group):
         
 
     def draw(self, surface: pygame.Surface) -> None:
+        """Draws the Snek object to the screen with correct head and tail orientation."""
         for i, segment in enumerate(self.body):
             if i == 0:
                 if self.direction_list[-1] == "RIGHT":
-                    self.head_image = pygame.transform.rotate(load_image("head"), 270)
+                    head_image = pygame.transform.rotate(self.head_image, 270)
                 elif self.direction_list[-1] == "LEFT":
-                    self.head_image = pygame.transform.rotate(load_image("head"), 90)
+                    head_image = pygame.transform.rotate(self.head_image, 90)
                 elif self.direction_list[-1] == "DOWN":
-                    self.head_image = pygame.transform.rotate(load_image("head"), 180)
+                    head_image = pygame.transform.rotate(self.head_image, 180)
                 elif self.direction_list[-1] == "UP":
-                    self.head_image = pygame.transform.rotate(load_image("head"), 0)
-                segment.image = self.head_image
+                    head_image = pygame.transform.rotate(self.head_image, 0)
+                segment.image = head_image
             elif i == len(self.body) - 1:
                 if self.direction_list[0] == "RIGHT":
-                    self.tail_image = pygame.transform.rotate(load_image("tail"), 270)
+                    tail_image = pygame.transform.rotate(self.tail_image, 270)
                 elif self.direction_list[0] == "LEFT":
-                    self.tail_image = pygame.transform.rotate(load_image("tail"), 90)
+                    tail_image = pygame.transform.rotate(self.tail_image, 90)
                 elif self.direction_list[0] == "DOWN":
-                    self.tail_image = pygame.transform.rotate(load_image("tail"), 180)
+                    tail_image = pygame.transform.rotate(self.tail_image, 180)
                 elif self.direction_list[0] == "UP":
-                    self.tail_image = pygame.transform.rotate(load_image("tail"), 0)
-                segment.image = self.tail_image
-            else:
-                segment.image = self.body_image
+                    tail_image = pygame.transform.rotate(self.tail_image, 0)
+                segment.image = tail_image
+
             segment.draw(surface)
 
 
