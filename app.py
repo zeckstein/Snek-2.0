@@ -22,7 +22,6 @@ screen = pygame.display.set_mode((MINIMUM_WIDTH, MINIMUM_HEIGHT))
 pygame.display.set_caption("Snek")
 
 
-
 # Run the game loop
 running = True
 while running:

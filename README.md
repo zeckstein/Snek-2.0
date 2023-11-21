@@ -37,7 +37,7 @@ Project Organization
     │
     ├── classes
     │   ├── elements       <- UI elements (buttons, text)
-    │   └── objects        <- game objects (snake, apple)
+    │   └── objects        <- game objects (snake, apple #TODO FIX APPLE)
     │
     └── scenes             <- Loops for each scene space
     │   ├── main_menu.py
