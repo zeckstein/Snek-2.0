@@ -15,7 +15,8 @@ class Apple(pygame.sprite.Sprite):
         self.rect.y = random.randrange(0, screen.get_height(), INCREMENT)
 
     def update(self, screen: pygame.Surface) -> None:
-        """update the apple position
+        """update the apple position 
+        #TODO check for snek collision OR open spaces? get passed the available spots?
 
         Args:
             screen (pygame.Surface): the game screen

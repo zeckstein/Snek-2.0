@@ -69,8 +69,6 @@ class Snek(pygame.sprite.Group):
             event_key (pygame.KEYDOWN): a pygame.KEYDOWN event only accepts
             LEFT, RIGHT, UP, DOWN arrow keys
         """
-        # TODO update when self.direction set to try to avoid direct turn around issue
-        # rapid keypress allows for backtrack death :*(
         if event_key == pygame.K_LEFT and self.direction != "RIGHT":
             self._update_direction("LEFT")
         if event_key == pygame.K_RIGHT and self.direction != "LEFT":
@@ -82,7 +80,7 @@ class Snek(pygame.sprite.Group):
 
     
     def _update_direction(self, direction: str) -> None:
-        """ensures no vertical uturns onto self
+        """ensures no vertical u-turn onto self
 
         Args:
             direction (str): direction from input

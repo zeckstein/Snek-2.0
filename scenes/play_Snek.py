@@ -35,7 +35,7 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
     bg_music_snek_slow.play(-1)
 
     # insert a sleep to allow music to start
-    sleep = True
+    intro_sleep = True
 
     while True:
         # game objects
@@ -46,9 +46,9 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
 
         # minor pause for music
         # TODO READY, GO! progressive text
-        if sleep:
-            pygame.time.delay(1100)
-            sleep = False
+        if intro_sleep:
+            pygame.time.delay(500)
+            intro_sleep = False
     pygame.quit()
     quit()
 
@@ -60,20 +60,6 @@ def _handle_input(screen: pygame.Surface, snek: Snek) -> None:
             pygame.quit()
             quit()
 
-        # TODO maintain minimum window size, update to follow option settings (MAKE NOT RESIZABLE?)
-        if event.type == pygame.VIDEORESIZE:
-            logging.debug("resize event: %s", event)
-            if screen.get_width() < MINIMUM_WIDTH:
-                screen = pygame.display.set_mode(
-                    (MINIMUM_WIDTH, screen.get_height()), pygame.RESIZABLE
-                )
-                logging.debug("width below min")
-            if screen.get_height() < MINIMUM_HEIGHT:
-                screen = pygame.display.set_mode(
-                    (screen.get_width(), MINIMUM_HEIGHT), pygame.RESIZABLE
-                )
-                logging.debug("height below min")
-
         # START OF KEYED INPUTS DURING GAME
         if event.type == pygame.KEYDOWN:
             snek.handle_event(event.key)
@@ -82,8 +68,11 @@ def _handle_input(screen: pygame.Surface, snek: Snek) -> None:
 def _game_logic(screen: pygame.Surface, snek: Snek, apple: Apple) -> None:
     # see if Snek is intersecting Apple
     chomp = False
-    if pygame.sprite.collide_rect(snek.head, apple):
+    # check if head will touch apple on next move
+    if (snek.head.rect.x + snek.vx == apple.rect.x 
+        and snek.head.rect.y + snek.vy == apple.rect.y):
         chomp = True
+    if pygame.sprite.collide_rect(snek.head, apple):
         apple.update(screen)
     if snek.update(screen, chomp) == False:
         scenes.main_menu(screen)
