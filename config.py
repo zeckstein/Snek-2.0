@@ -1,7 +1,7 @@
 # CONSTANTS
-# TODO figure out math issues with placement of apple and snake
+# CURRENTLY NEEDS TO BE ODD 40xOdd_num = minimum size
 MINIMUM_WIDTH = 600
-MINIMUM_HEIGHT = 600
-INCREMENT = 40
+MINIMUM_HEIGHT = 600  # (40 x 15)
+INCREMENT = 40  # based on current sprite size as png
 
-FPS = 6
+FPS = 5
