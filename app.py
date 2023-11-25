@@ -1,8 +1,4 @@
 import pygame
-
-from classes.objects.apple import Apple
-from classes.objects.snek import Snek
-
 import scenes
 
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
