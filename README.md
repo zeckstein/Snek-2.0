@@ -1,11 +1,11 @@
 # Make a new version of the Snek game
 Goal: Make a new version of the Snek game that shows better organization, code quality, and use of Python/Pygame features.  
 Considering the following:
- - Sound
+ - Sound (✔️)
  - Persistent Scoreboard
  - Resizable window and graphics (maybe playfield sizes s/m/l/fullzen?)
  - Curve piece?
- - Animation
+ - Animation on eat and grow (apple bump travels to end of snake)
  - Two player mode
  - AI mode
  - Power-ups
@@ -31,7 +31,7 @@ Project Organization
     │
     ├── assets
     │   ├── images         <- snake and apple .pngs
-    │   └── sounds         <- music and (#TODO) sound effects
+    │   └── sounds         <- music and sound effects
     │       ├── bg_music   <- background music files (mp3)
     │       └── sfx        <- sound effects (empty for now)
     │
@@ -39,11 +39,11 @@ Project Organization
     │   ├── elements       <- UI elements (buttons, text)
     │   └── objects        <- game objects (snake, apple #TODO FIX APPLE)
     │
-    └── scenes             <- Loops for each scene space
+    ├─ scenes             <- Loops for each scene space
     │   ├── main_menu.py
     │   ├── play_Snek.py
+    │   ├── options_menu.py    
     │   ├── (#TODO) game_over.py
-    │   ├── (#TODO) leaderboard.py
-    │   └── (#TODO) options_menu.py
+    │   └── (#TODO) leaderboard.py
     │
     └── .gitignore        <- cache files and .vscode workspace settings (e.g. spellcheck, etc.)
