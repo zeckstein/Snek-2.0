@@ -4,14 +4,16 @@ import logging
 from classes.objects.apple import Apple
 from classes.objects.snek import Snek
 import scenes
-from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
+from config import FPS
 
 
 base_dir = Path(__file__).resolve().parent.parent
 # snek game music by tempo
 bg_music_snek_slow = pygame.mixer.Sound(
-    base_dir / "assets/sounds/bg_music/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3"
-    )
+    base_dir
+    / "assets/sounds/bg_music/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3"
+)
+
 
 def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global options
     """Gives control of passed screen for Snek game.
@@ -19,7 +21,7 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
     Args:
         screen (pygame.Surface): pygame surface, intended main window
     """
-    logging.info("Entering Snek game")
+    logging.info("Entering Snek GAME")
 
     pygame.display.set_caption("Snek - PLAY")
 
@@ -69,12 +71,15 @@ def _game_logic(screen: pygame.Surface, snek: Snek, apple: Apple) -> None:
     # see if Snek is intersecting Apple
     chomp = False
     # check if head will touch apple on next move
-    if (snek.head.rect.x + snek.vx == apple.rect.x 
-        and snek.head.rect.y + snek.vy == apple.rect.y):
+    if (
+        snek.head.rect.x + snek.vx == apple.rect.x
+        and snek.head.rect.y + snek.vy == apple.rect.y
+    ):
         chomp = True
     if pygame.sprite.collide_rect(snek.head, apple):
         apple.update(screen)
     if snek.update(screen, chomp) == False:
+        pygame.mixer.stop()
         scenes.main_menu(screen)
 
         # check if apple is under snek, TODO update so apple only chooses from open spaces
