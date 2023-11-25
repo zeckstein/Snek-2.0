@@ -11,12 +11,13 @@ base_dir = Path(__file__).resolve().parent.parent
 # main_menu music
 pygame.mixer.init()
 bg_music_menu = pygame.mixer.Sound(
-    base_dir / "assets/sounds/bg_music/2019-01-02_-_8_Bit_Menu_-_David_Renda_-_FesliyanStudios.com.mp3",
+    base_dir
+    / "assets/sounds/bg_music/2019-01-02_-_8_Bit_Menu_-_David_Renda_-_FesliyanStudios.com.mp3",
 )
 
 
 def main_menu(screen: pygame.Surface):
-    logging.info("Entering main menu")
+    logging.info("Entering MAIN menu")
 
     # text
     game_title = Text("Snek", 50, Color.WHITE, screen.get_width() // 2, 100)
@@ -34,6 +35,17 @@ def main_menu(screen: pygame.Surface):
         click_color=Color.DARK_GREEN,
         callback=lambda: scenes.play_Snek(screen),
     )
+    options_button = Button(
+        "Options",
+        200,
+        50,
+        screen.get_width() / 2,
+        screen.get_height() / 2 + 50,
+        bg_color=Color.BLUE,
+        hover_color=Color.LIGHT_BLUE,
+        click_color=Color.DARK_BLUE,
+        callback=lambda: scenes.options_menu(screen),
+    )
     quit_button = Button(
         "Quit",
         200,
@@ -46,17 +58,16 @@ def main_menu(screen: pygame.Surface):
         callback=lambda: running.update({"running": False}),
     )
     # place all the things you want drawn here
-    drawn_objects_with_handle_event = [play_button, quit_button]
+    drawn_objects_with_handle_event = [play_button, options_button, quit_button]
     objects_to_draw = [
         *drawn_objects_with_handle_event,
         game_title,
         menu_title,
     ]
 
-    # stop all music then play this scene's track
-    # TODO make this a utils function and in all scenes (just play_Snek for now)
-    pygame.mixer.stop()
-    bg_music_menu.play(-1)
+    # play this scene's track if it's not already playing
+    if not pygame.mixer.get_busy():
+        bg_music_menu.play(-1)
 
     # game loop
     running = True
