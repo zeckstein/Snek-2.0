@@ -2,6 +2,7 @@ from enum import Enum
 from pathlib import Path
 from pygame.image import load
 from pygame import Surface
+from enum import Enum
 
 
 def load_image(name: str, with_alpha=True) -> Surface:
@@ -29,14 +30,18 @@ class Color(Enum):
     BLACK = (0, 0, 0)
     BLUE = (0, 0, 255)
     CYAN = (0, 255, 255)
-    DARK_RED = (139, 0, 0)
+    DARK_BLUE = (0, 0, 139)
     DARK_GREEN = (0, 100, 0)
+    DARK_RED = (139, 0, 0)
+    DARK_YELLOW = (139, 139, 0)
     GRAY = (128, 128, 128)
     GREEN = (0, 255, 0)
-    LIME = (0, 128, 0)
+    LIGHT_BLUE = (135, 206, 250)
     LIGHT_GRAY = (211, 211, 211)
     LIGHT_GREEN = (144, 238, 144)
     LIGHT_RED = (255, 99, 71)
+    LIGHT_YELLOW = (255, 255, 224)
+    LIME = (0, 128, 0)
     MAGENTA = (255, 0, 255)
     MAROON = (128, 0, 0)
     NAVY = (0, 0, 128)
