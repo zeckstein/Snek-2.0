@@ -8,9 +8,8 @@ import logging
 base_dir = Path(__file__).resolve().parent.parent.parent
 # TODO investigate better way to global initialize and not need this in every file
 pygame.mixer.init()
-sfx_chomp = pygame.mixer.Sound(
-    str(base_dir / "assets/sounds/sfx/chomp.mp3")
-)
+sfx_chomp = pygame.mixer.Sound(str(base_dir / "assets/sounds/sfx/chomp.mp3"))
+
 
 # TODO implement color selection?
 class Segment(pygame.sprite.Sprite):
@@ -35,14 +34,14 @@ class Snek(pygame.sprite.Group):
         self.vx = INCREMENT
         self.vy = 0
 
-        self.head_image = load_image('head')
-        self.body_image = load_image('body')
-        self.tail_image = load_image('tail')
+        self.head_image = load_image("head")
+        self.body_image = load_image("body")
+        self.tail_image = load_image("tail")
 
         # Calculate initial positions
         head_start_pos = (
-            (screen.get_width() // 2),
-            (screen.get_height() // 2),
+            (screen.get_width() / 2),
+            (screen.get_height() / 2),
         )
         body_position = (head_start_pos[0] - INCREMENT, head_start_pos[1])
         tail_position = (head_start_pos[0] - 2 * INCREMENT, head_start_pos[1])
@@ -59,7 +58,7 @@ class Snek(pygame.sprite.Group):
         self.add(self.head)
         self.add(self.first_body_segment)
         self.add(self.tail)
-        
+
         self.sfx_chomp = sfx_chomp
 
     def handle_event(self, event_key: pygame.KEYDOWN) -> None:
@@ -78,7 +77,6 @@ class Snek(pygame.sprite.Group):
         if event_key == pygame.K_DOWN and self.direction != "UP":
             self._update_direction("DOWN")
 
-    
     def _update_direction(self, direction: str) -> None:
         """ensures no vertical u-turn onto self
 
@@ -87,11 +85,13 @@ class Snek(pygame.sprite.Group):
         """
         current_x = self.head.rect.centerx
         current_y = self.head.rect.centery
-        
+
         if direction == "RIGHT" and self.direction != "LEFT":
             head_predicted_position = (current_x + INCREMENT, current_y)
-            if (head_predicted_position[0] == self.body[1].rect.centerx and 
-                head_predicted_position[1] == self.body[1].rect.centery):
+            if (
+                head_predicted_position[0] == self.body[1].rect.centerx
+                and head_predicted_position[1] == self.body[1].rect.centery
+            ):
                 pass
             else:
                 self.vx = INCREMENT
@@ -99,8 +99,10 @@ class Snek(pygame.sprite.Group):
                 self.direction = "RIGHT"
         if direction == "LEFT" and self.direction != "RIGHT":
             head_predicted_position = (current_x - INCREMENT, current_y)
-            if (head_predicted_position[0] == self.body[1].rect.centerx and 
-                head_predicted_position[1] == self.body[1].rect.centery):
+            if (
+                head_predicted_position[0] == self.body[1].rect.centerx
+                and head_predicted_position[1] == self.body[1].rect.centery
+            ):
                 pass
             else:
                 self.vx = -INCREMENT
@@ -108,8 +110,10 @@ class Snek(pygame.sprite.Group):
                 self.direction = "LEFT"
         if direction == "UP" and self.direction != "DOWN":
             head_predicted_position = (current_x, current_y - INCREMENT)
-            if (head_predicted_position[0] == self.body[1].rect.centerx and 
-                head_predicted_position[1] == self.body[1].rect.centery):
+            if (
+                head_predicted_position[0] == self.body[1].rect.centerx
+                and head_predicted_position[1] == self.body[1].rect.centery
+            ):
                 pass
             else:
                 self.vx = 0
@@ -117,15 +121,16 @@ class Snek(pygame.sprite.Group):
                 self.direction = "UP"
         if direction == "DOWN" and self.direction != "UP":
             head_predicted_position = (current_x, current_y + INCREMENT)
-            if (head_predicted_position[0] == self.body[1].rect.centerx and 
-                head_predicted_position[1] == self.body[1].rect.centery):
+            if (
+                head_predicted_position[0] == self.body[1].rect.centerx
+                and head_predicted_position[1] == self.body[1].rect.centery
+            ):
                 pass
             else:
                 self.vx = 0
                 self.vy = INCREMENT
                 self.direction = "DOWN"
-                
-        
+
     def update(self, screen: pygame.Surface, chomp: bool) -> bool:
         """Store the old positions of the head and body segments
         returns True if no collision, False if collision"""
@@ -177,7 +182,7 @@ class Snek(pygame.sprite.Group):
             return True
         else:
             return False
-        
+
     def _grow(self) -> None:
         # Create a new body segment and add it to self.body
         new_segment = Segment(self.body_image, self.body[-1].rect.center)
@@ -186,7 +191,6 @@ class Snek(pygame.sprite.Group):
         self.body.append(self.tail)
 
         self._size += 1
-        
 
     def draw(self, surface: pygame.Surface) -> None:
         """Draws the Snek object to the screen with correct head and tail orientation."""
@@ -212,8 +216,8 @@ class Snek(pygame.sprite.Group):
                     tail_image = pygame.transform.rotate(self.tail_image, 0)
                 segment.image = tail_image
 
+            # call draw from segment
             segment.draw(surface)
-
 
     def get_score(self) -> int:
         return self._size

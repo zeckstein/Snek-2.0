@@ -15,7 +15,7 @@ class Apple(pygame.sprite.Sprite):
         self.rect.y = random.randrange(0, screen.get_height(), INCREMENT)
 
     def update(self, screen: pygame.Surface) -> None:
-        """update the apple position 
+        """update the apple position
         #TODO check for snek collision OR open spaces? get passed the available spots?
 
         Args:
@@ -25,4 +25,4 @@ class Apple(pygame.sprite.Sprite):
         self.rect.y = random.randrange(0, screen.get_height(), INCREMENT)
 
     def draw(self, surface: pygame.Surface) -> None:
-        surface.blit(self.image, (self.rect.x, self.rect.y))
+        surface.blit(self.image, self.rect)
