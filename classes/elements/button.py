@@ -33,6 +33,9 @@ class Button:
 
         self._set_position(x, y)
 
+    def update_position(self, new_x: int, new_y: int) -> None:
+        self._set_position(new_x, new_y)
+
     def _set_position(self, x: int, y: int) -> None:
         if self.alignment == "left":
             self.rect.x = x
@@ -42,21 +45,6 @@ class Button:
         elif self.alignment == "right":
             self.rect.right = x
             self.rect.y = y
-
-    def update_position(self, new_x: int, new_y: int) -> None:
-        self._set_position(new_x, new_y)
-
-    def draw(self, surface: pygame.Surface) -> None:
-        color = self.bg_color
-        if self.clicked:
-            color = self.click_color
-        elif self.hovered:
-            color = self.hover_color
-
-        pygame.draw.rect(surface, color, self.rect)
-        text = self.font.render(self.text, True, self.text_color)
-        text_rect = text.get_rect(center=self.rect.center)
-        surface.blit(text, text_rect)
 
     def handle_event(self, event: pygame.KEYDOWN) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -71,3 +59,15 @@ class Button:
             else:
                 self.hovered = False
                 self.clicked = False
+
+    def draw(self, surface: pygame.Surface) -> None:
+        color = self.bg_color
+        if self.clicked:
+            color = self.click_color
+        elif self.hovered:
+            color = self.hover_color
+
+        pygame.draw.rect(surface, color, self.rect)
+        text = self.font.render(self.text, True, self.text_color)
+        text_rect = text.get_rect(center=self.rect.center)
+        surface.blit(text, text_rect)

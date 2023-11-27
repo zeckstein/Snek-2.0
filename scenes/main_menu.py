@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 import pygame
 import logging
@@ -55,7 +56,7 @@ def main_menu(screen: pygame.Surface):
         bg_color=Color.RED,
         hover_color=Color.LIGHT_RED,
         click_color=Color.DARK_RED,
-        callback=lambda: running.update({"running": False}),
+        callback=lambda: sys.exit(),
     )
     # place all the things you want drawn here
     drawn_objects_with_handle_event = [play_button, options_button, quit_button]
@@ -77,7 +78,7 @@ def main_menu(screen: pygame.Surface):
         _draw(screen, objects_to_draw)
 
     pygame.quit()
-    quit()
+    sys.exit()
 
 
 def _handle_events(screen: pygame.Surface, *args):
@@ -90,11 +91,11 @@ def _handle_events(screen: pygame.Surface, *args):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            quit()
+            sys.exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
-                quit()
+                sys.exit()
             if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                 scenes.play_Snek(screen)
 
