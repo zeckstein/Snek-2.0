@@ -54,8 +54,6 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
         if intro_sleep:
             pygame.time.delay(500)
             intro_sleep = False
-    pygame.quit()
-    quit()
 
 
 def _handle_input(screen: pygame.Surface, snek: Snek) -> None:

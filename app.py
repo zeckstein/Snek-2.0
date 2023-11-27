@@ -1,3 +1,4 @@
+import sys
 import pygame
 import scenes
 
@@ -26,4 +27,4 @@ while running:
 
 # Quit Pygame
 pygame.quit()
-quit()
+sys.exit()

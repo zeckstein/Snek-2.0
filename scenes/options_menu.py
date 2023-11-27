@@ -159,9 +159,6 @@ def options_menu(screen: pygame.Surface):
         _handle_events(screen, *drawn_objects_with_handle_event)
         _draw(screen, objects_to_draw)
 
-    pygame.quit()
-    quit()
-
 
 def _handle_events(screen: pygame.Surface, *args):
     """Screen and any number of objects with handle_event(event) methods.
@@ -173,7 +170,7 @@ def _handle_events(screen: pygame.Surface, *args):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            quit()
+            sys.exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
