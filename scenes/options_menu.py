@@ -1,31 +1,123 @@
+import sys
 from pathlib import Path
 import pygame
 import logging
 from classes.elements import Text, Button
 import scenes
 from utils import Color
-from config import MINIMUM_WIDTH, MINIMUM_HEIGHT
+from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
+from options import Options
 
 base_dir = Path(__file__).resolve().parent.parent
+# get the options instance
+options = Options()
 
 
 # (#TODO add option controls)
 def options_menu(screen: pygame.Surface):
     logging.info("Entering OPTIONS menu")
 
+    screen_width = screen.get_width()
+
     # text
-    menu_title = Text("Options Menu", 50, Color.WHITE, screen.get_width() // 2, 100)
-    note_text = Text(
-        "Under Construction", 30, Color.WHITE, screen.get_width() // 2, 200
+    menu_title = Text(
+        "Options Menu",
+        50,
+        Color.WHITE,
+        screen_width / 2,
+        screen.get_height() / 10,
     )
 
-    # buttons
+    # Available options
+    speed_option = Text(
+        "Speed", 50, Color.WHITE, screen_width / 3.5, 300, alignment="right"
+    )
+
+    # speed options buttons
+    speed_slow_button = Button(
+        "Slow",
+        80,
+        50,
+        screen_width / 2 - 90 + (screen_width * 0.05),
+        300,
+        bg_color=Color.YELLOW,
+        hover_color=Color.LIGHT_YELLOW,
+        click_color=Color.DARK_YELLOW,
+        callback=lambda: options.update_speed(3),
+    )
+
+    speed_medium_button = Button(
+        "Medium",
+        80,
+        50,
+        screen_width / 2 + (screen_width * 0.05),
+        300,
+        bg_color=Color.YELLOW,
+        hover_color=Color.LIGHT_YELLOW,
+        click_color=Color.DARK_YELLOW,
+        callback=lambda: options.update_speed(5),
+    )
+
+    speed_fast_button = Button(
+        "Fast",
+        80,
+        50,
+        screen_width / 2 + 90 + (screen_width * 0.05),
+        300,
+        bg_color=Color.YELLOW,
+        hover_color=Color.LIGHT_YELLOW,
+        click_color=Color.DARK_YELLOW,
+        callback=lambda: options.update_speed(11),
+    )
+
+    size_option = Text(
+        "Grid Size", 50, Color.WHITE, screen_width / 3.5, 200, alignment="right"
+    )
+
+    # size options buttons
+    size_small_9_button = Button(
+        "9",
+        80,
+        50,
+        screen_width / 2 - 90 + (screen_width * 0.05),
+        200,
+        bg_color=Color.YELLOW,
+        hover_color=Color.LIGHT_YELLOW,
+        click_color=Color.DARK_YELLOW,
+        callback=lambda: logging.debug("9"),
+    )
+
+    size_medium_15_button = Button(
+        "15",
+        80,
+        50,
+        screen_width / 2 + (screen_width * 0.05),
+        200,
+        bg_color=Color.YELLOW,
+        hover_color=Color.LIGHT_YELLOW,
+        click_color=Color.DARK_YELLOW,
+        callback=lambda: logging.debug("15"),
+    )
+
+    size_large_21_button = Button(
+        "21",
+        80,
+        50,
+        screen_width / 2 + 90 + (screen_width * 0.05),
+        200,
+        bg_color=Color.YELLOW,
+        hover_color=Color.LIGHT_YELLOW,
+        click_color=Color.DARK_YELLOW,
+        callback=lambda: logging.debug(f"21"),
+    )
+
+    # navigation buttons
     back_button = Button(
         "Back",
         200,
         50,
-        screen.get_width() / 2,
-        screen.get_height() / 2,
+        screen_width / 2,
+        (screen.get_height() * 0.75),
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
         click_color=Color.DARK_YELLOW,
@@ -35,19 +127,29 @@ def options_menu(screen: pygame.Surface):
         "Quit",
         200,
         50,
-        screen.get_width() / 2,
-        screen.get_height() / 2 + 100,
+        screen_width / 2,
+        (screen.get_height() * 0.75) + 70,
         bg_color=Color.RED,
         hover_color=Color.LIGHT_RED,
         click_color=Color.DARK_RED,
-        callback=lambda: running.update({"running": False}),
+        callback=lambda: sys.exit(),
     )
     # place all the things you want drawn here
-    drawn_objects_with_handle_event = [back_button, quit_button]
+    drawn_objects_with_handle_event = [
+        speed_slow_button,
+        speed_medium_button,
+        speed_fast_button,
+        size_small_9_button,
+        size_medium_15_button,
+        size_large_21_button,
+        back_button,
+        quit_button,
+    ]
     objects_to_draw = [
         *drawn_objects_with_handle_event,
         menu_title,
-        note_text,
+        size_option,
+        speed_option,
     ]
 
     # game loop
@@ -75,22 +177,7 @@ def _handle_events(screen: pygame.Surface, *args):
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
-                quit()
-            if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
-                scenes.play_Snek(screen)
-
-        if event.type == pygame.VIDEORESIZE:
-            logging.debug("resize event: %s", event)
-            if screen.get_width() < MINIMUM_WIDTH:
-                screen = pygame.display.set_mode(
-                    (MINIMUM_WIDTH, screen.get_height()), pygame.RESIZABLE
-                )
-            logging.debug("width below min")
-            if screen.get_height() < MINIMUM_HEIGHT:
-                screen = pygame.display.set_mode(
-                    (screen.get_width(), MINIMUM_HEIGHT), pygame.RESIZABLE
-                )
-            logging.debug("height below min")
+                sys.exit()
 
         for arg in args:
             arg.handle_event(event)

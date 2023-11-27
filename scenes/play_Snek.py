@@ -1,10 +1,11 @@
+import sys
 from pathlib import Path
 import pygame
 import logging
 from classes.objects.apple import Apple
 from classes.objects.snek import Snek
 import scenes
-from config import FPS
+from options import Options
 
 
 base_dir = Path(__file__).resolve().parent.parent
@@ -26,6 +27,8 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
     pygame.display.set_caption("Snek - PLAY")
 
     # game objects
+    options = Options()
+    FPS = options.speed
     clock = pygame.time.Clock()
     snek = Snek(screen)
     apple = Apple(screen)
@@ -58,12 +61,13 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
 def _handle_input(screen: pygame.Surface, snek: Snek) -> None:
     """Handles pygame events."""
     for event in pygame.event.get():
-        if event.type == pygame.QUIT or event.type == pygame.K_ESCAPE:
+        if event.type == pygame.QUIT:
             pygame.quit()
-            quit()
-
-        # START OF KEYED INPUTS DURING GAME
+            sys.exit()
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.mixer.stop()
+                scenes.main_menu(screen)
             snek.handle_event(event.key)
 
 

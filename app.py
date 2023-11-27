@@ -1,7 +1,7 @@
 import pygame
 import scenes
 
-from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
+from config import MINIMUM_WIDTH, MINIMUM_HEIGHT
 
 import logging
 
