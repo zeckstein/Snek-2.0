@@ -1,7 +1,7 @@
 from pathlib import Path
 import pygame
 import logging
-from classes.elements import Text, Button
+from classes.elements import Text, Button, TextInput
 import scenes
 from utils import Color
 from config import MINIMUM_WIDTH, MINIMUM_HEIGHT
@@ -18,6 +18,10 @@ def options_menu(screen: pygame.Surface):
     note_text = Text(
         "Under Construction", 30, Color.WHITE, screen.get_width() // 2, 200
     )
+
+    # TODO REVIEW THIS
+    # TEXT INPUT TEST
+    text_input = TextInput(border_color=Color.PURPLE, border_width=2)
 
     # buttons
     back_button = Button(
@@ -43,7 +47,7 @@ def options_menu(screen: pygame.Surface):
         callback=lambda: running.update({"running": False}),
     )
     # place all the things you want drawn here
-    drawn_objects_with_handle_event = [back_button, quit_button]
+    drawn_objects_with_handle_event = [text_input, back_button, quit_button]
     objects_to_draw = [
         *drawn_objects_with_handle_event,
         menu_title,
@@ -76,8 +80,6 @@ def _handle_events(screen: pygame.Surface, *args):
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 quit()
-            if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
-                scenes.play_Snek(screen)
 
         if event.type == pygame.VIDEORESIZE:
             logging.debug("resize event: %s", event)
