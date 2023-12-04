@@ -6,7 +6,6 @@ from classes.elements.text import Text
 from classes.elements.button import Button
 import scenes
 from utils import Color
-from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
 
 base_dir = Path(__file__).resolve().parent.parent
 # main_menu music
@@ -15,7 +14,6 @@ bg_music_menu = pygame.mixer.Sound(
     base_dir
     / "assets/sounds/bg_music/2019-01-02_-_8_Bit_Menu_-_David_Renda_-_FesliyanStudios.com.mp3",
 )
-
 
 def main_menu(screen: pygame.Surface):
     logging.info("Entering MAIN menu")
@@ -96,21 +94,23 @@ def _handle_events(screen: pygame.Surface, *args):
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
+            if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN or event.key == pygame.K_p:
                 scenes.play_Snek(screen)
+            if event.key == pygame.K_o:
+                scenes.options_menu(screen)
 
-        if event.type == pygame.VIDEORESIZE:
-            logging.debug("resize event: %s", event)
-            if screen.get_width() < MINIMUM_WIDTH:
-                screen = pygame.display.set_mode(
-                    (MINIMUM_WIDTH, screen.get_height()), pygame.RESIZABLE
-                )
-            logging.debug("width below min")
-            if screen.get_height() < MINIMUM_HEIGHT:
-                screen = pygame.display.set_mode(
-                    (screen.get_width(), MINIMUM_HEIGHT), pygame.RESIZABLE
-                )
-            logging.debug("height below min")
+        # if event.type == pygame.VIDEORESIZE:
+        #     logging.debug("resize event: %s", event)
+        #     if screen.get_width() < MINIMUM_WIDTH:
+        #         screen = pygame.display.set_mode(
+        #             (MINIMUM_WIDTH, screen.get_height()), pygame.RESIZABLE
+        #         )
+        #     logging.debug("width below min")
+        #     if screen.get_height() < MINIMUM_HEIGHT:
+        #         screen = pygame.display.set_mode(
+        #             (screen.get_width(), MINIMUM_HEIGHT), pygame.RESIZABLE
+        #         )
+        #     logging.debug("height below min")
 
         for arg in args:
             arg.handle_event(event)

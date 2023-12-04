@@ -2,7 +2,7 @@ import sys
 import pygame
 import scenes
 
-from config import MINIMUM_WIDTH, MINIMUM_HEIGHT
+from options import Options
 
 import logging
 
@@ -15,7 +15,8 @@ logging.basicConfig(
 # Initialize sounds and Pygame
 pygame.init()
 # Set up the window
-screen = pygame.display.set_mode((MINIMUM_WIDTH, MINIMUM_HEIGHT))
+options = Options()
+screen = pygame.display.set_mode((options.screen_width, options.screen_height))
 pygame.display.set_caption("Snek")
 
 

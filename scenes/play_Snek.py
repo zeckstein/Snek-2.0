@@ -29,9 +29,10 @@ def play_Snek(screen: pygame.Surface) -> None:  # TODO update params, global opt
     # game objects
     options = Options()
     FPS = options.speed
+    SCALE = options.scale
     clock = pygame.time.Clock()
-    snek = Snek(screen)
-    apple = Apple(screen)
+    snek = Snek(screen, SCALE)
+    apple = Apple(screen, SCALE)
 
     # text
 
@@ -79,17 +80,11 @@ def _game_logic(screen: pygame.Surface, snek: Snek, apple: Apple) -> None:
     ):
         chomp = True
     if pygame.sprite.collide_rect(snek.head, apple):
-        apple.update(screen)
+        logging.debug("CHOMP!")
+        apple.update(screen, snek.get_body_coords())
     if snek.update(screen, chomp) == False:
         pygame.mixer.stop()
         scenes.main_menu(screen)
-
-        # check if apple is under snek, TODO update so apple only chooses from open spaces
-        # TODO check when there is nospace left for apple
-
-        while pygame.sprite.spritecollideany(apple, snek):
-            apple.update(screen)
-            logging.debug("apple under snek, watch out for infinity if you can WIN!")
 
 
 def _draw(screen: pygame.Surface, snek: Snek, apple: Apple) -> None:

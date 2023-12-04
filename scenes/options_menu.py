@@ -5,7 +5,6 @@ import logging
 from classes.elements import Text, Button
 import scenes
 from utils import Color
-from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, FPS
 from options import Options
 
 base_dir = Path(__file__).resolve().parent.parent
@@ -76,7 +75,7 @@ def options_menu(screen: pygame.Surface):
 
     # size options buttons
     size_small_9_button = Button(
-        "9",
+        "5",
         80,
         50,
         screen_width / 2 - 90 + (screen_width * 0.05),
@@ -84,7 +83,7 @@ def options_menu(screen: pygame.Surface):
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
         click_color=Color.DARK_YELLOW,
-        callback=lambda: logging.debug("9"),
+        callback=lambda: options.update_grid_size(5),
     )
 
     size_medium_15_button = Button(
@@ -96,11 +95,11 @@ def options_menu(screen: pygame.Surface):
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
         click_color=Color.DARK_YELLOW,
-        callback=lambda: logging.debug("15"),
+        callback=lambda: options.update_grid_size(15),
     )
 
     size_large_21_button = Button(
-        "21",
+        "25",
         80,
         50,
         screen_width / 2 + 90 + (screen_width * 0.05),
@@ -108,9 +107,9 @@ def options_menu(screen: pygame.Surface):
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
         click_color=Color.DARK_YELLOW,
-        callback=lambda: logging.debug(f"21"),
+        callback=lambda: options.update_grid_size(25),
     )
-
+    
     # navigation buttons
     back_button = Button(
         "Back",
@@ -173,8 +172,7 @@ def _handle_events(screen: pygame.Surface, *args):
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
+                scenes.main_menu(screen)
 
         for arg in args:
             arg.handle_event(event)

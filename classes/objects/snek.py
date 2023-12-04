@@ -1,7 +1,6 @@
 from pathlib import Path
 import pygame
 from utils import load_image
-from config import MINIMUM_WIDTH, MINIMUM_HEIGHT, INCREMENT
 
 import logging
 
@@ -23,28 +22,30 @@ class Segment(pygame.sprite.Sprite):
 
 
 class Snek(pygame.sprite.Group):
-    def __init__(self, screen: pygame.Surface):
+    def __init__(self, screen: pygame.Surface, scale: int):
         pygame.sprite.Group.__init__(self)
         # number of body segments / ALSO == score basically
+        self.scale = scale
         self._size = 1
         # initial direction RIGHT, velocity
         self.direction = "RIGHT"
         self.direction_list = []
         # TODO change INCREMENT to scale which should = size of head rect
-        self.vx = INCREMENT
+        self.vx = self.scale
         self.vy = 0
 
-        self.head_image = load_image("head")
-        self.body_image = load_image("body")
-        self.tail_image = load_image("tail")
+        # TODO make alpha verison of head and tail sprites
+        self.head_image = pygame.transform.scale(load_image("head"), (scale, scale))
+        self.body_image = pygame.transform.scale(load_image("body"), (scale, scale))
+        self.tail_image = pygame.transform.scale(load_image("tail"), (scale, scale))
 
         # Calculate initial positions
         head_start_pos = (
             (screen.get_width() / 2),
             (screen.get_height() / 2),
         )
-        body_position = (head_start_pos[0] - INCREMENT, head_start_pos[1])
-        tail_position = (head_start_pos[0] - 2 * INCREMENT, head_start_pos[1])
+        body_position = (head_start_pos[0] - scale, head_start_pos[1])
+        tail_position = (head_start_pos[0] - 2 * scale, head_start_pos[1])
 
         # create snake segments
         self.head = Segment(self.head_image, head_start_pos)
@@ -87,29 +88,29 @@ class Snek(pygame.sprite.Group):
         current_y = self.head.rect.centery
 
         if direction == "RIGHT" and self.direction != "LEFT":
-            head_predicted_position = (current_x + INCREMENT, current_y)
+            head_predicted_position = (current_x + self.scale, current_y)
             if (
                 head_predicted_position[0] == self.body[1].rect.centerx
                 and head_predicted_position[1] == self.body[1].rect.centery
             ):
                 pass
             else:
-                self.vx = INCREMENT
+                self.vx = self.scale
                 self.vy = 0
                 self.direction = "RIGHT"
         if direction == "LEFT" and self.direction != "RIGHT":
-            head_predicted_position = (current_x - INCREMENT, current_y)
+            head_predicted_position = (current_x - self.scale, current_y)
             if (
                 head_predicted_position[0] == self.body[1].rect.centerx
                 and head_predicted_position[1] == self.body[1].rect.centery
             ):
                 pass
             else:
-                self.vx = -INCREMENT
+                self.vx = -self.scale
                 self.vy = 0
                 self.direction = "LEFT"
         if direction == "UP" and self.direction != "DOWN":
-            head_predicted_position = (current_x, current_y - INCREMENT)
+            head_predicted_position = (current_x, current_y - self.scale)
             if (
                 head_predicted_position[0] == self.body[1].rect.centerx
                 and head_predicted_position[1] == self.body[1].rect.centery
@@ -117,10 +118,10 @@ class Snek(pygame.sprite.Group):
                 pass
             else:
                 self.vx = 0
-                self.vy = -INCREMENT
+                self.vy = -self.scale
                 self.direction = "UP"
         if direction == "DOWN" and self.direction != "UP":
-            head_predicted_position = (current_x, current_y + INCREMENT)
+            head_predicted_position = (current_x, current_y + self.scale)
             if (
                 head_predicted_position[0] == self.body[1].rect.centerx
                 and head_predicted_position[1] == self.body[1].rect.centery
@@ -128,7 +129,7 @@ class Snek(pygame.sprite.Group):
                 pass
             else:
                 self.vx = 0
-                self.vy = INCREMENT
+                self.vy = self.scale
                 self.direction = "DOWN"
 
     def update(self, screen: pygame.Surface, chomp: bool) -> bool:
@@ -221,3 +222,6 @@ class Snek(pygame.sprite.Group):
 
     def get_score(self) -> int:
         return self._size
+    
+    def get_body_coords(self): 
+        return [(segment.rect.x, segment.rect.y) for segment in self.body]
