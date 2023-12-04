@@ -13,16 +13,42 @@ sfx_chomp = pygame.mixer.Sound(str(base_dir / "assets/sounds/sfx/chomp.mp3"))
 # TODO implement color selection?
 class Segment(pygame.sprite.Sprite):
     def __init__(self, image, position):
+        """
+        Initialize the Snek object.
+
+        Args:
+            image (pygame.Surface): The image of the Snek.
+            position (tuple): The initial position of the Snek.
+
+        Returns:
+            None
+        """
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.rect = self.image.get_rect(center=position)
 
     def draw(self, surface: pygame.Surface):
+        """draw this one segment to the screen
+
+        Args:
+            surface (pygame.Surface): _description_
+        """
         surface.blit(self.image, self.rect)
+
+
+import pygame
+import logging
 
 
 class Snek(pygame.sprite.Group):
     def __init__(self, screen: pygame.Surface, scale: int):
+        """
+        Initializes the Snek object.
+
+        Args:
+            screen (pygame.Surface): The surface on which the Snek object will be drawn.
+            scale (int): The scale of the Snek object.
+        """
         pygame.sprite.Group.__init__(self)
         # number of body segments / ALSO == score basically
         self.scale = scale
@@ -63,11 +89,11 @@ class Snek(pygame.sprite.Group):
         self.sfx_chomp = sfx_chomp
 
     def handle_event(self, event_key: pygame.KEYDOWN) -> None:
-        # TODO update to options/settings controls once implemented
-        """Handles pygame events for the Snek object.
+        """
+        Handles pygame events for the Snek object.
+
         Args:
-            event_key (pygame.KEYDOWN): a pygame.KEYDOWN event only accepts
-            LEFT, RIGHT, UP, DOWN arrow keys
+            event_key (pygame.KEYDOWN): A pygame.KEYDOWN event that accepts LEFT, RIGHT, UP, DOWN arrow keys.
         """
         if event_key == pygame.K_LEFT and self.direction != "RIGHT":
             self._update_direction("LEFT")
@@ -79,10 +105,11 @@ class Snek(pygame.sprite.Group):
             self._update_direction("DOWN")
 
     def _update_direction(self, direction: str) -> None:
-        """ensures no vertical u-turn onto self
+        """
+        Ensures no vertical u-turn onto self.
 
         Args:
-            direction (str): direction from input
+            direction (str): The direction from input.
         """
         current_x = self.head.rect.centerx
         current_y = self.head.rect.centery
@@ -133,8 +160,17 @@ class Snek(pygame.sprite.Group):
                 self.direction = "DOWN"
 
     def update(self, screen: pygame.Surface, chomp: bool) -> bool:
-        """Store the old positions of the head and body segments
-        returns True if no collision, False if collision"""
+        """
+        Store the old positions of the head and body segments.
+        Returns True if no collision, False if collision.
+
+        Args:
+            screen (pygame.Surface): The surface on which the Snek object will be drawn.
+            chomp (bool): A boolean value indicating whether a chomp has occurred.
+
+        Returns:
+            bool: True if no collision, False if collision.
+        """
         old_positions = [segment.rect.center for segment in self.body]
 
         # Move the head
@@ -157,15 +193,21 @@ class Snek(pygame.sprite.Group):
             return True
 
     def _track_direction(self) -> None:
-        # for head and tail rotations
+        """
+        Tracks the direction of the Snek object for head and tail rotations.
+        """
         self.direction_list.append(self.direction)
         if len(self.direction_list) > self._size + 1:
             self.direction_list.pop(0)
 
     def _check_self_collision(self) -> bool:
-        # get the coords out of the segments
+        """
+        Checks for self-collision of the Snek object.
+
+        Returns:
+            bool: True if self-collision occurs, False otherwise.
+        """
         coords = [segment.rect.center for segment in self.body]
-        # if any of the coordinates are the same (erased by set), there is a collision
         if len(coords) != len(set(coords)):
             logging.info("Snek self collision")
             return True
@@ -173,6 +215,15 @@ class Snek(pygame.sprite.Group):
             return False
 
     def _check_boundary_collision(self, screen: pygame.Surface) -> bool:
+        """
+        Checks for boundary collision of the Snek object.
+
+        Args:
+            screen (pygame.Surface): The surface on which the Snek object will be drawn.
+
+        Returns:
+            bool: True if boundary collision occurs, False otherwise.
+        """
         if (
             self.head.rect.centerx < 0
             or self.head.rect.centerx > screen.get_width()
@@ -185,7 +236,9 @@ class Snek(pygame.sprite.Group):
             return False
 
     def _grow(self) -> None:
-        # Create a new body segment and add it to self.body
+        """
+        Grows the Snek object by creating a new body segment.
+        """
         new_segment = Segment(self.body_image, self.body[-1].rect.center)
         self.body[-1] = new_segment
         self.add(new_segment)
@@ -194,7 +247,12 @@ class Snek(pygame.sprite.Group):
         self._size += 1
 
     def draw(self, surface: pygame.Surface) -> None:
-        """Draws the Snek object to the screen with correct head and tail orientation."""
+        """
+        Draws the Snek object to the screen with correct head and tail orientation.
+
+        Args:
+            surface (pygame.Surface): The surface on which the Snek object will be drawn.
+        """
         for i, segment in enumerate(self.body):
             if i == 0:
                 if self.direction_list[-1] == "RIGHT":
@@ -217,11 +275,22 @@ class Snek(pygame.sprite.Group):
                     tail_image = pygame.transform.rotate(self.tail_image, 0)
                 segment.image = tail_image
 
-            # call draw from segment
             segment.draw(surface)
 
     def get_score(self) -> int:
+        """
+        Returns the score of the Snek object.
+
+        Returns:
+            int: The score of the Snek object.
+        """
         return self._size
 
     def get_body_coords(self):
+        """
+        Returns the coordinates of the body segments of the Snek object.
+
+        Returns:
+            list: A list of tuples representing the coordinates of the body segments.
+        """
         return [(segment.rect.x, segment.rect.y) for segment in self.body]
