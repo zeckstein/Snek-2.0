@@ -15,6 +15,7 @@ bg_music_menu = pygame.mixer.Sound(
     / "assets/sounds/bg_music/2019-01-02_-_8_Bit_Menu_-_David_Renda_-_FesliyanStudios.com.mp3",
 )
 
+
 def main_menu(screen: pygame.Surface):
     logging.info("Entering MAIN menu")
 
@@ -94,7 +95,11 @@ def _handle_events(screen: pygame.Surface, *args):
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN or event.key == pygame.K_p:
+            if (
+                event.key == pygame.K_SPACE
+                or event.key == pygame.K_RETURN
+                or event.key == pygame.K_p
+            ):
                 scenes.play_Snek(screen)
             if event.key == pygame.K_o:
                 scenes.options_menu(screen)
