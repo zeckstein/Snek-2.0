@@ -36,10 +36,6 @@ class Segment(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
 
 
-import pygame
-import logging
-
-
 class Snek(pygame.sprite.Group):
     def __init__(self, screen: pygame.Surface, scale: int):
         """
@@ -87,12 +83,14 @@ class Snek(pygame.sprite.Group):
 
         self.sfx_chomp = sfx_chomp
 
-    def handle_event(self, event_key: pygame.KEYDOWN) -> None:
+    def handle_event(self, event_key: int) -> None:
         """
-        Handles pygame events for the Snek object.
+        Handles pygame directional input events for the Snek.
+        UP, DOWN, LEFT, or RIGHT
 
         Args:
-            event_key (pygame.KEYDOWN): A pygame.KEYDOWN event that accepts LEFT, RIGHT, UP, DOWN arrow keys.
+            event_key (int): pygame.K_<direction>
+
         """
         if event_key == pygame.K_LEFT and self.direction != "RIGHT":
             self._update_direction("LEFT")

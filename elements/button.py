@@ -1,6 +1,7 @@
 import pygame
 from typing import Callable, Optional
 from utils import Color
+from pygame import event
 
 
 class Button:
@@ -46,7 +47,7 @@ class Button:
             self.rect.right = x
             self.rect.y = y
 
-    def handle_event(self, event: pygame.KEYDOWN) -> None:
+    def handle_event(self, event: int) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if self.rect.collidepoint(event.pos):
                 self.clicked = True
