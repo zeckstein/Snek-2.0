@@ -111,6 +111,17 @@ def options_menu(screen: pygame.Surface):
     )
     
     # navigation buttons
+    play_button = Button(
+        "Play",
+        200,
+        50,
+        screen.get_width() / 2,
+        (screen.get_height() * 0.75) - 70,
+        bg_color=Color.GREEN,
+        hover_color=Color.LIGHT_GREEN,
+        click_color=Color.DARK_GREEN,
+        callback=lambda: scenes.play_Snek(screen),
+    )
     back_button = Button(
         "Back",
         200,
@@ -141,6 +152,7 @@ def options_menu(screen: pygame.Surface):
         size_small_9_button,
         size_medium_15_button,
         size_large_21_button,
+        play_button,
         back_button,
         quit_button,
     ]
