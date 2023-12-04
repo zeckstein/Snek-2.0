@@ -2,8 +2,7 @@ import sys
 from pathlib import Path
 import pygame
 import logging
-from classes.elements.text import Text
-from classes.elements.button import Button
+from elements import Text, Button
 import scenes
 from utils import Color
 

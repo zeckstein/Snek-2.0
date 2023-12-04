@@ -2,8 +2,7 @@ import sys
 from pathlib import Path
 import pygame
 import logging
-from classes.objects.apple import Apple
-from classes.objects.snek import Snek
+from objects import Snek, Apple
 import scenes
 from options import Options
 

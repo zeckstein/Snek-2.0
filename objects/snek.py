@@ -4,7 +4,7 @@ from utils import load_image
 
 import logging
 
-base_dir = Path(__file__).resolve().parent.parent.parent
+base_dir = Path(__file__).resolve().parent.parent
 # TODO investigate better way to global initialize and not need this in every file
 pygame.mixer.init()
 sfx_chomp = pygame.mixer.Sound(str(base_dir / "assets/sounds/sfx/chomp.mp3"))
@@ -222,6 +222,6 @@ class Snek(pygame.sprite.Group):
 
     def get_score(self) -> int:
         return self._size
-    
-    def get_body_coords(self): 
+
+    def get_body_coords(self):
         return [(segment.rect.x, segment.rect.y) for segment in self.body]

@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import pygame
 import logging
-from classes.elements import Text, Button
+from elements import Text, Button
 import scenes
 from utils import Color
 from options import Options
@@ -109,7 +109,7 @@ def options_menu(screen: pygame.Surface):
         click_color=Color.DARK_YELLOW,
         callback=lambda: options.update_grid_size(25),
     )
-    
+
     # navigation buttons
     play_button = Button(
         "Play",
