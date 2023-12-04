@@ -56,7 +56,6 @@ class Snek(pygame.sprite.Group):
         # initial direction RIGHT, velocity
         self.direction = "RIGHT"
         self.direction_list = []
-        # TODO change INCREMENT to scale which should = size of head rect
         self.vx = self.scale
         self.vy = 0
 
