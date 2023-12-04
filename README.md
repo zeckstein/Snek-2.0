@@ -3,7 +3,7 @@ Goal: Make a new version of the Snek game that shows better organization, code q
 Considering the following:
  - Sound (✔️)
  - Persistent Scoreboard
- - Resizable window and graphics (maybe playfield sizes s/m/l/fullzen?)
+ - Resizable window and graphics
  - Curve piece?
  - Animation on eat and grow (apple bump travels to end of snake)
  - Two player mode
@@ -33,11 +33,11 @@ Project Organization
     │   ├── images         <- snake and apple .pngs
     │   └── sounds         <- music and sound effects
     │       ├── bg_music   <- background music files (mp3)
-    │       └── sfx        <- sound effects (empty for now)
+    │       └── sfx        <- sound effects
     │
     ├── classes
     │   ├── elements       <- UI elements (buttons, text)
-    │   └── objects        <- game objects (snake, apple #TODO FIX APPLE)
+    │   └── objects        <- game objects (snake, apple)
     │
     ├─ scenes             <- Loops for each scene space
     │   ├── main_menu.py
