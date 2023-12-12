@@ -23,13 +23,13 @@ def options_menu(screen: pygame.Surface):
         "Options Menu",
         50,
         Color.WHITE,
-        screen_width / 2,
-        screen.get_height() / 10,
+        screen_width // 2,
+        screen.get_height() // 10,
     )
 
     # Available options
     speed_option = Text(
-        "Speed", 50, Color.WHITE, screen_width / 3.5, 300, alignment="right"
+        "Speed", 50, Color.WHITE, int(screen_width / 3.5), 300, alignment="right"
     )
 
     # speed options buttons
@@ -37,7 +37,7 @@ def options_menu(screen: pygame.Surface):
         "Slow",
         80,
         50,
-        screen_width / 2 - 90 + (screen_width * 0.05),
+        screen_width // 2 - 90 + int(screen_width * 0.05),
         300,
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
@@ -49,7 +49,7 @@ def options_menu(screen: pygame.Surface):
         "Medium",
         80,
         50,
-        screen_width / 2 + (screen_width * 0.05),
+        screen_width // 2 + int(screen_width * 0.05),
         300,
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
@@ -61,7 +61,7 @@ def options_menu(screen: pygame.Surface):
         "Fast",
         80,
         50,
-        screen_width / 2 + 90 + (screen_width * 0.05),
+        screen_width // 2 + 90 + int(screen_width * 0.05),
         300,
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
@@ -70,7 +70,7 @@ def options_menu(screen: pygame.Surface):
     )
 
     size_option = Text(
-        "Grid Size", 50, Color.WHITE, screen_width / 3.5, 200, alignment="right"
+        "Grid Size", 50, Color.WHITE, int(screen_width / 3.5), 200, alignment="right"
     )
 
     # size options buttons
@@ -78,7 +78,7 @@ def options_menu(screen: pygame.Surface):
         "5",
         80,
         50,
-        screen_width / 2 - 90 + (screen_width * 0.05),
+        screen_width // 2 - 90 + int(screen_width * 0.05),
         200,
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
@@ -90,7 +90,7 @@ def options_menu(screen: pygame.Surface):
         "15",
         80,
         50,
-        screen_width / 2 + (screen_width * 0.05),
+        screen_width // 2 + int(screen_width * 0.05),
         200,
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
@@ -102,7 +102,7 @@ def options_menu(screen: pygame.Surface):
         "25",
         80,
         50,
-        screen_width / 2 + 90 + (screen_width * 0.05),
+        screen_width // 2 + 90 + int(screen_width * 0.05),
         200,
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
@@ -115,8 +115,8 @@ def options_menu(screen: pygame.Surface):
         "Play",
         200,
         50,
-        screen.get_width() / 2,
-        (screen.get_height() * 0.75) - 70,
+        screen.get_width() // 2,
+        int(screen.get_height() * 0.75) - 70,
         bg_color=Color.GREEN,
         hover_color=Color.LIGHT_GREEN,
         click_color=Color.DARK_GREEN,
@@ -126,8 +126,8 @@ def options_menu(screen: pygame.Surface):
         "Back",
         200,
         50,
-        screen_width / 2,
-        (screen.get_height() * 0.75),
+        screen_width // 2,
+        int(screen.get_height() * 0.75),
         bg_color=Color.YELLOW,
         hover_color=Color.LIGHT_YELLOW,
         click_color=Color.DARK_YELLOW,
@@ -137,8 +137,8 @@ def options_menu(screen: pygame.Surface):
         "Quit",
         200,
         50,
-        screen_width / 2,
-        (screen.get_height() * 0.75) + 70,
+        screen_width // 2,
+        int(screen.get_height() * 0.75) + 70,
         bg_color=Color.RED,
         hover_color=Color.LIGHT_RED,
         click_color=Color.DARK_RED,

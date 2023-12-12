@@ -83,7 +83,7 @@ class Snek(pygame.sprite.Group):
 
         self.sfx_chomp = sfx_chomp
 
-    def handle_event(self, event_key: int) -> None:
+    def handle_event(self, event_key) -> None:
         """
         Handles pygame directional input events for the Snek.
         UP, DOWN, LEFT, or RIGHT
